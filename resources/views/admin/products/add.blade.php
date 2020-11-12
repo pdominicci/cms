@@ -88,9 +88,14 @@
                 <div class="row mtop16">
                     <div class="col-md-12">
                         <label for="" class="content">Descripción</label>
-                        {!! Form::textarea('content', null, ['class' => 'form-control'] )!!}
+                        {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'editor'] )!!}
                     </div>
                 </div>
+                <div class="row mtop16">
+                    <div class="col-md-12">
+                        {!!Form::submit('Guardar', ['class' => 'btn btn-success'])!!}                    </div>
+                </div>
+
                 {!! Form::close() !!}
             </div>
         </div>
