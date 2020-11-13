@@ -24,8 +24,14 @@
             </li>
             <li>
                 <a href="{{ url('/admin/products') }}">
-                    <i class="fas fa-boxes" data-toggle="tooltip" data-placement="top" title="Administrar a Productos"></i>
+                    <i class="fas fa-boxes" data-toggle="tooltip" data-placement="top" title="Administrar Productos"></i>
                     Productos
+                </a>
+            </li>
+            <li>
+                <a href="{{ url('/admin/categories') }}">
+                    <i class="fas fa-folder" data-toggle="tooltip" data-placement="top" title="Administrar Categorías"></i>
+                    Categorías
                 </a>
             </li>
             <li>
