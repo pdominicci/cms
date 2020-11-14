@@ -24,24 +24,45 @@
     <title>@yield('title') - CMS</title>
 </head>
 <body>
-    <div class="wrapper">
+    
+    <div class="wrapper">        
         <div class="col1">
             @include('admin.sidebar')
         </div>
         <div class="col2">
-            <nav class="navbar navbar-expand-lg shadow">
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="{{ url('/admin') }}" class="nav-link">
-                                <i class="fas fa-home" data-toggle="tooltip" data-placement="top" title="Ir a Dashboard"></i>              
-                                Dashboard
-                            </a>
-                        </li>
-                    </ul>
+            <div class="container-fluid">
+                <div class="row"> 
+                    
+                    <nav class="navbar navbar-expand-lg shadow">
+                        <div class="col-md-3">
+                        <div class="collapse navbar-collapse">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a href="{{ url('/admin') }}" class="nav-link">
+                                        <i class="fas fa-home" data-toggle="tooltip" data-placement="top" title="Ir a Dashboard"></i>              
+                                        Dashboard
+                                    </a>
+                                </li>
+                            </ul>                            
+                        </div>
+                        </div>
+                        <div class="col-md-8">
+                        <div class="row userinfo">
+                            
+                                <div class="name">
+                                    {{ Auth::user()->name }} {{ Auth::user()->lastname }}                                        
+                                </div>
+                                <div class="email">
+                                    {{ Auth::user()->email }}
+                                    
+                                </div>                                
+                                <a href=" {{ url('/logout') }} " data-toggle="tooltip" data-placement="bottom" title="Salir"><i class="salir fas fa-power-off"></i></a>
+                            
+                        </div>
+                        </div>
+                    </nav>
                 </div>
-            </nav>
-
+            </div>
             <div class="page">
                 <div class="container-fluid">
                     <nav aria-label="breadcrumb shadow">
@@ -80,7 +101,10 @@
                 @section('content')
                 @show
             </div>
+
+            
         </div>
+        
     </div>
     
 </body>

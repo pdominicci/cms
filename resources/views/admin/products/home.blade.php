@@ -22,7 +22,7 @@
             </div>
             <div class="inside">
                 <div class="btns">
-                    <a href="{{ url('/admin/products/add') }}" class="btn btn-primary"><i class="fas fa-plus"></i>Agregar Producto</a>
+                    <a href="{{ url('/admin/products/add') }}" class="btn btn-dark"><i class="fas fa-plus"></i> Agregar Producto</a>
                 </div>
                 <table class="table">
                     

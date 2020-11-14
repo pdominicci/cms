@@ -93,7 +93,7 @@
                 </div>
                 <div class="row mtop16">
                     <div class="col-md-12">
-                        {!!Form::submit('Guardar', ['class' => 'btn btn-success'])!!}                    </div>
+                        {!!Form::submit('Guardar', ['class' => 'btn btn-dark'])!!}                    </div>
                 </div>
 
                 {!! Form::close() !!}

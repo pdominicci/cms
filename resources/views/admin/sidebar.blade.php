@@ -4,15 +4,7 @@
             <img src=" {{ url('static/images/logoPraga.png') }} " class="img-fluid">
         </div>    
 
-        <div class="user">
-            <div class="name">
-                {{ Auth::user()->name }} {{ Auth::user()->lastname }}
-                <a href=" {{ url('/logout') }} " data-toggle="tooltip" data-placement="top" title="Salir"><i class="fas fa-sign-out-alt"></i></a>
-            </div>
-            <div class="email">
-                {{ Auth::user()->email }}
-            </div>
-        </div>    
+            
     </div>
     <div class="main">
         <ul>
