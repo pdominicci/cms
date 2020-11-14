@@ -15,7 +15,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="panel">
                     <div class="header">
                         <h2 class="title">
@@ -51,6 +51,64 @@
                         </div>
                         {!! Form::submit('Guardar', ['class' => 'btn btn-dark mtop16'])!!}
                         {!! Form::close() !!}
+
+                        @if(Session::has('message'))                            
+                            <div class="mtop16 alert alert-{{ Session::get('typealert')}}">
+                                {{ Session::get('message')}}
+                                @if ($errors->any()) 
+                                    <ul>
+                                        @foreach($errors->all() as $error)
+                                            <li>{{ $error }}</li>    
+                                        @endforeach                
+                                    </ul>
+                                @endif
+                                <script>
+                                    $('.alert').slideDown();
+                                    setTimeout(function(){
+                                                        $('.alert').slideUp();
+                                                        }, 10000);
+                                </script>
+                            </div>
+                        @endif
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="panel">
+                    <div class="header">
+                        <h2 class="title">
+                            <i class="fas fa-folder"></i>
+                            Categorías
+                        </h2>            
+                    </div>
+
+                    <div class="inside">
+                        <nav class="nav"> 
+                            @foreach (getModulesArray() as $m => $k)
+                                <a href="{{ url('/admin/categories/'.$m) }}" class="nav-link"><i class="fas fa-list"></i> {{ $k }}</a>
+                            @endforeach                            
+                        </nav>
+                        <table class="table mtop16">
+                            <thead>
+                                <tr>
+                                    <td width="50"></td>
+                                    <td>Nombre</td>
+                                    <td></td>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($cats as $cat)
+                                    <tr>
+                                    <td class='celdaicono'>{!! htmlspecialchars_decode($cat->icono) !!}</td>
+                                    <td>{{$cat->name}}</td>
+                                    <td></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

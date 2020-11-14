@@ -21,7 +21,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ url('/admin/categories') }}">
+                <a href="{{ url('/admin/categories/0') }}">
                     <i class="fas fa-folder" data-toggle="tooltip" data-placement="top" title="Administrar Categorías"></i>
                     Categorías
                 </a>
