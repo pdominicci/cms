@@ -67,20 +67,20 @@ class ProductController extends Controller
         //     ->with('typealert', 'danger')
         //     ->withInput();
         // else:
-            $path = '/'.date('Y-m-d');
-            $fileExt = trim($request->file('img')->getClientOriginalExtension());
-            $upload_path = Config::get('filesystems.disks.uploads.url');
-            $name = Str::slug(str_replace($fileExt,'',$request->file('img')->getClientOriginalName()));
+            // $path = '/'.date('Y-m-d');
+            // $fileExt = trim($request->file('img')->getClientOriginalExtension());
+            // $upload_path = Config::get('filesystems.disks.uploads.url');
+            // $name = Str::slug(str_replace($fileExt,'',$request->file('img')->getClientOriginalName()));
 
-            $filename = rand(1, 999).'-'.$name.'.'.$fileExt;
-            $file_file = $upload_path .'/'.$path.'/'.$filename;
+            // $filename = rand(1, 999).'-'.$name.'.'.$fileExt;
+            // $file_file = $upload_path .'/'.$path.'/'.$filename;
 
             $p = new Product;
             $p->status = '0';
             $p->name = e($request->input('name'));
             $p->slug = Str::slug($request->input('name'));
             $p->category_id = $request->input('category');
-            $p->file_path = date('Y-m-d');
+            // $p->file_path = date('Y-m-d');
             // $p->image = $filename;
             $p->price = $request->input('price');
             $p->in_discount = $request->input('indiscount');
