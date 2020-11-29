@@ -29,18 +29,20 @@ class ProductController extends Controller
     private function uploadImage(Request $request)
     {
         //si no enviaron imagen
-        $customFile = 'noDisponible.jpg';
+        $prdImage = 'noDisponible.jpg';
 
         //subir imagen si fue enviada
             //si enviaron archivo
-        if( $request->file('customFile') ){
+        $img = $request->file('img');
+
+        if( $request->file('img') ){
             //renombrar time() + extension
-            $customFile = time().'.'.$request->file('customFile')->clientExtension();
+            $img = time().'.'.$request->file('img')->clientExtension();
             //subir
-            $request->file('customFile')->move( public_path('productos/'), $customFile);
+            $request->file('img')->move( public_path('products/'), $img);
         }
 
-        return $customFile;
+        return $img;
     }
     public function postProductAdd(Request $request){
         $rules = [
@@ -79,24 +81,25 @@ class ProductController extends Controller
             $p->slug = Str::slug($request->input('name'));
             $p->category_id = $request->input('category');
             $p->file_path = date('Y-m-d');
-            $p->image = $filename;
+            // $p->image = $filename;
             $p->price = $request->input('price');
             $p->in_discount = $request->input('indiscount');
             $p->discount = $request->input('discount');
             $p->contenido = e($request->input('content'));
-
-            if($p->save()):
-                if($request->hasFile('img')):
-                    $fl = $request->img->storeAs($path, $filename, 'uploads');
-                    $img = Image::make($file_file);
-                    $img->fit(256,256,function($constraint){
-                        $constraint->upsize();
-                    });
-                    $img->save($upload_path.'/'.$path.'/t_'.$filename);
-                endif;
-                return redirect('admin/products')->with('message','El producto ' . $p->name . ' se ha guardado exitosamente.')->with('typealert', 'success');
-            else:
-            endif;
+            $img = $this->uploadImage($request);
+            $p->image = $img;
+            // if($p->save()):
+            //     if($request->hasFile('img')):
+            //         $fl = $request->img->storeAs($path, $filename, 'uploads');
+            //         $img = Image::make($file_file);
+            //         $img->fit(256,256,function($constraint){
+            //             $constraint->upsize();
+            //         });
+            //         $img->save($upload_path.'/'.$path.'/t_'.$filename);
+            //     endif;
+            //     return redirect('admin/products')->with('message','El producto ' . $p->name . ' se ha guardado exitosamente.')->with('typealert', 'success');
+            // else:
+            // endif;
 
         // endif;
 
