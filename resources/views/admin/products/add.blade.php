@@ -3,17 +3,17 @@
 @section('title', 'Agregar Producto')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item">        
+    <li class="breadcrumb-item">
         <a href="{{ url('/admin/products') }}">
             <i class="fas fa-boxes"></i>
             Productos
-        </a>        
+        </a>
     </li>
-    <li class="breadcrumb-item">        
+    <li class="breadcrumb-item">
         <a href="{{ url('/admin/products/add') }}">
             <i class="fas fa-plus"></i>
             Agregar Producto
-        </a>        
+        </a>
     </li>
 @endsection
 
@@ -24,7 +24,7 @@
                 <h2 class="title">
                     <i class="fas fa-plus"></i>
                     Agregar Producto
-                </h2>            
+                </h2>
             </div>
             <div class="inside">
                 {!! Form::open(['url' => '/admin/products/add', 'files' => true]) !!}
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        
+
                         <label for="title"> Imagen Destacada:</label>
                         <div class="custom-file">
                             {!! Form::file('img', ['class' => 'custom-file-input', 'id' =>'customFile', 'accept'=>'image/*']) !!}
@@ -81,7 +81,7 @@
                     <div class="col-md-2">
                         <label for="discount">Descuento:</label>
                         <div class="input-group">
-                            
+
                             {!!Form::number('discount', 0, ['class' => 'form-control', 'min' => '0', 'step' => 'any'])!!}
                             <div class="input-group-append">
                                 <span class="input-group-text" id="basic-addon1">%</span>
@@ -90,7 +90,7 @@
                     </div>
                 </div>
 
-                
+
                 <div class="row mtop16">
                     <div class="col-md-12">
                         <label for="" class="content">Descripción</label>
@@ -99,7 +99,7 @@
                 </div>
                 <div class="row mtop16">
                     <div class="col-md-12">
-                        {!!Form::submit('Guardar', ['class' => 'btn btn-dark'])!!}                    
+                        {!!Form::submit('Guardar', ['class' => 'btn btn-dark'])!!}
                     </div>
                 </div>
 

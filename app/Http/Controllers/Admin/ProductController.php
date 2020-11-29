@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Models\Category, App\Http\Models\Product;
 
-use Validator, Str, Config, Image;
+use Validator;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Config;
+use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
@@ -38,13 +41,14 @@ class ProductController extends Controller
             'price.required' => 'Ingrese el precio del producto',
         ];
 
-        $validator = Validator::make($request->all(), $rules, $messages);
-        if($validator->fails()):
-            return back()->withErrors($validator)
-            ->with('message','Se ha producido un error')
-            ->with('typealert', 'danger')
-            ->withInput();
-        else:
+        $request->validate($rules, $messages);
+        // $validator = Validator::make($request->all(), $rules, $messages);
+        // if($validator->fails()):
+        //     return back()->withErrors($validator)
+        //     ->with('message','Se ha producido un error')
+        //     ->with('typealert', 'danger')
+        //     ->withInput();
+        // else:
             $path = '/'.date('Y-m-d');
             $fileExt = trim($request->file('img')->getClientOriginalExtension());
             $upload_path = Config::get('filesystems.disks.uploads.url');
@@ -78,7 +82,7 @@ class ProductController extends Controller
             else:
             endif;
 
-        endif;
+        // endif;
 
     }
 }

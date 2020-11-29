@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Validator, Str;
+use Validator;
+use Illuminate\Support\Str;
 
 use App\Http\Models\Category;
 
@@ -34,13 +35,15 @@ class CategoryController extends Controller
         ];
         $messages = [
             'name.required' => 'Se requiere de un nombre para la categoría',
-            'icon.required' => 'Se requiere de un nombre para el ícono',            
+            'icon.required' => 'Se requiere de un nombre para el ícono',
         ];
 
-        $validator = Validator::make($request->all(), $rules, $messages);
-        if($validator->fails()):
-            return back()->withErrors($validator)->with('message','Se ha producido un error')->with('typealert', 'danger');
-        else:
+
+        $request->validate($rules,$messages);
+        // $validator = Validator::make($request->all(), $rules, $messages);
+        // if($validator->fails()):
+            // return back()->withErrors($validator)->with('message','Se ha producido un error')->with('typealert', 'danger');
+        // else:
             // se puede hacer con query builder
             // DB::table('categories')
             // ->where('id', $id)
@@ -50,7 +53,7 @@ class CategoryController extends Controller
             //             //'slug' => Str::slug($request->input('name')),
             //             'icono' => e($request->input('icon')),
             //         ]);
-            
+
             $c = Category::find($id);
             $c->module = $request->input('module');
             $c->name = e($request->input('name'));
@@ -60,7 +63,7 @@ class CategoryController extends Controller
             if($c->save()):
                 return back()->with('message','La categoría ' . $c->name . ' se ha guardado exitosamente.')->with('typealert', 'success');
             endif;
-        endif;       
+        // endif;
     }
     public function categoryAdd(Request $request){
         $rules = [
@@ -69,13 +72,14 @@ class CategoryController extends Controller
         ];
         $messages = [
             'name.required' => 'Se requiere de un nombre para la categoría',
-            'icon.required' => 'Se requiere de un nombre para el ícono',            
+            'icon.required' => 'Se requiere de un nombre para el ícono',
         ];
 
-        $validator = Validator::make($request->all(), $rules, $messages);
-        if($validator->fails()):
-            return back()->withErrors($validator)->with('message','Se ha producido un error')->with('typealert', 'danger');
-        else:
+        $request->validate($rules,$messages);
+        // $validator = Validator::make($request->all(), $rules, $messages);
+        // if($validator->fails()):
+        //     return back()->withErrors($validator)->with('message','Se ha producido un error')->with('typealert', 'danger');
+        // else:
             $c = new Category;
             $c->module = $request->input('module');
             $c->name = e($request->input('name'));
@@ -85,7 +89,7 @@ class CategoryController extends Controller
                 return back()->with('message','La categoría ' . $c->name . ' se ha guardado exitosamente.')->with('typealert', 'success');
             else:
             endif;
-        endif;
+        // endif;
     }
     public function getCategoryDelete(Request $request, $id){
         $c = Category::find($id);
