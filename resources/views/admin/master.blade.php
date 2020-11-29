@@ -80,7 +80,7 @@
                 </div>
 
                 @if(Session::has('message'))
-                    <div class="mtop16 alert alert-{{ Session::get('typealert')}}" style="display:none;">
+                    <div class="mtop16 alert alert-{{ Session::get('typealert')}}">
                         {{ Session::get('message')}}
                         @if ($errors->any())
                             <ul>

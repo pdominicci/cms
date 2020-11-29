@@ -27,7 +27,7 @@
                 </h2>            
             </div>
             <div class="inside">
-                {!! Form::open(['url' => '/admin/products/add']) !!}
+                {!! Form::open(['url' => '/admin/products/add', 'files' => true]) !!}
                 <div class="row">
 
                     <div class="col-md-6">
@@ -41,13 +41,19 @@
                     </div>
 
                     <div class="col-md-3">
-                        <label for="title"> Categoría:</label>
+                        <label for="category"> Categoría:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="far fa-keyboard"></i></span>
+                            </div>
+                            {!!Form::select('category',$cats, 0, ['class' => 'custom-select']) !!}
+                        </div>
                     </div>
                     <div class="col-md-3">
                         
                         <label for="title"> Imagen Destacada:</label>
                         <div class="custom-file">
-                            {!! Form::file('img', ['class' => 'custom-file-input', 'id' =>'customFile']) !!}
+                            {!! Form::file('img', ['class' => 'custom-file-input', 'id' =>'customFile', 'accept'=>'image/*']) !!}
                             <label class="custom-file-label" for="customFile">Choose file</label>
                         </div>
 
@@ -93,7 +99,8 @@
                 </div>
                 <div class="row mtop16">
                     <div class="col-md-12">
-                        {!!Form::submit('Guardar', ['class' => 'btn btn-dark'])!!}                    </div>
+                        {!!Form::submit('Guardar', ['class' => 'btn btn-dark'])!!}                    
+                    </div>
                 </div>
 
                 {!! Form::close() !!}

@@ -51,26 +51,6 @@
                         </div>
                         {!! Form::submit('Guardar', ['class' => 'btn btn-dark mtop16'])!!}
                         {!! Form::close() !!}
-
-                        @if(Session::has('message'))                            
-                            <div class="mtop16 alert alert-{{ Session::get('typealert')}}">
-                                {{ Session::get('message')}}
-                                @if ($errors->any()) 
-                                    <ul>
-                                        @foreach($errors->all() as $error)
-                                            <li>{{ $error }}</li>    
-                                        @endforeach                
-                                    </ul>
-                                @endif
-                                <script>
-                                    $('.alert').slideDown();
-                                    setTimeout(function(){
-                                                        $('.alert').slideUp();
-                                                        }, 10000);
-                                </script>
-                            </div>
-                        @endif
-
                     </div>
                 </div>
             </div>
@@ -95,7 +75,7 @@
                                 <tr>
                                     <td width="50"></td>
                                     <td>Nombre</td>
-                                    <td></td>
+                                    <td width="120"></td>
 
                                 </tr>
                             </thead>
@@ -104,7 +84,16 @@
                                     <tr>
                                     <td class='celdaicono'>{!! htmlspecialchars_decode($cat->icono) !!}</td>
                                     <td>{{$cat->name}}</td>
-                                    <td></td>
+                                    <td>
+                                        <div class="opts">                                            
+                                            <a href="{{url('/admin/categories/'.$cat->id.'/edit')}}">
+                                                <i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="Modificar Categoría"></i>
+                                            </a>
+                                            <a href="{{url('/admin/categories/'.$cat->id.'/delete')}}">
+                                                <i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top" title="Eliminar Categoría"></i>
+                                            </a>
+                                        </div>
+                                    </td>
                                     </tr>
                                 @endforeach
                             </tbody>

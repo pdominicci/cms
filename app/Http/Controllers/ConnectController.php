@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Validator, Hash, Auth;
 use App\User;
 
@@ -29,8 +30,16 @@ class ConnectController extends Controller
         if($validator->fails()):
             return back()->withErrors($validator)->with('message','Se ha producido un error')->with('typealert', 'danger');
         else:
+            $email = $request -> input('email');
             if(Auth::attempt(['email' => $request -> input('email'), 'password' => $request -> input('password')], true)):
-                return redirect('/');
+                $user = DB::table('users')
+                        ->where('email', $email)
+                        ->first();
+                if($user->role==0):
+                    return redirect('/');
+                else:
+                    return redirect('/admin');
+                endif;
             else:
                 return back()->with('message','E-mail o contraseña incorrecta')->with('typealert', 'danger');
             endif;
@@ -75,7 +84,6 @@ class ConnectController extends Controller
                 return redirect('/login')->with('message','Su usuario ha sido registrado exitosamente, ya puede iniciar sesión')->with('typealert', 'success');
             endif;
         endif;
-
     }
     public function getRecover(){
         return view('connect.recover');
@@ -84,6 +92,6 @@ class ConnectController extends Controller
     }
     public function getLogout(){
         Auth::logout();
-        return redirect('/');
+        return redirect('/login');
     }
 }
