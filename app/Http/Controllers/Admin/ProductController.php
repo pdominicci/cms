@@ -26,6 +26,22 @@ class ProductController extends Controller
         $data = ['cats' => $cats];
         return view('admin.products.add', $data);
     }
+    private function uploadImage(Request $request)
+    {
+        //si no enviaron imagen
+        $customFile = 'noDisponible.jpg';
+
+        //subir imagen si fue enviada
+            //si enviaron archivo
+        if( $request->file('customFile') ){
+            //renombrar time() + extension
+            $customFile = time().'.'.$request->file('customFile')->clientExtension();
+            //subir
+            $request->file('customFile')->move( public_path('productos/'), $customFile);
+        }
+
+        return $customFile;
+    }
     public function postProductAdd(Request $request){
         $rules = [
             // el key deberia ser el nombre que le pusimos al componente del form
