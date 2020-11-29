@@ -32,14 +32,14 @@ class ProductController extends Controller
         $prdImage = 'noDisponible.jpg';
 
         //subir imagen si fue enviada
-            //si enviaron archivo
+        //si enviaron archivo
         $img = $request->file('img');
 
         if( $request->file('img') ){
             //renombrar time() + extension
             $img = time().'.'.$request->file('img')->clientExtension();
             //subir
-            $request->file('img')->move( public_path('products/'), $img);
+            $request->file('img')->move(public_path('products/'), $img);
         }
 
         return $img;
@@ -55,53 +55,25 @@ class ProductController extends Controller
         $messages = [
             'name.required' => 'El nombre del producto es obligatorio',
             'img.required' => 'Seleccione una imagen destacada',
-            //'img.image' => 'El archivo no es una imagen',
             'price.required' => 'Ingrese el precio del producto',
         ];
 
         $request->validate($rules, $messages);
-        // $validator = Validator::make($request->all(), $rules, $messages);
-        // if($validator->fails()):
-        //     return back()->withErrors($validator)
-        //     ->with('message','Se ha producido un error')
-        //     ->with('typealert', 'danger')
-        //     ->withInput();
-        // else:
-            // $path = '/'.date('Y-m-d');
-            // $fileExt = trim($request->file('img')->getClientOriginalExtension());
-            // $upload_path = Config::get('filesystems.disks.uploads.url');
-            // $name = Str::slug(str_replace($fileExt,'',$request->file('img')->getClientOriginalName()));
 
-            // $filename = rand(1, 999).'-'.$name.'.'.$fileExt;
-            // $file_file = $upload_path .'/'.$path.'/'.$filename;
+        $p = new Product;
+        $p->status = '0';
+        $p->name = e($request->input('name'));
+        $p->slug = Str::slug($request->input('name'));
+        $p->category_id = $request->input('category');
+        $p->file_path = public_path('productos/');
+        $p->price = $request->input('price');
+        $p->in_discount = $request->input('indiscount');
+        $p->discount = $request->input('discount');
+        $p->contenido = e($request->input('content'));
+        $img = $this->uploadImage($request);
+        $p->image = $img;
+        $p->save();
 
-            $p = new Product;
-            $p->status = '0';
-            $p->name = e($request->input('name'));
-            $p->slug = Str::slug($request->input('name'));
-            $p->category_id = $request->input('category');
-            // $p->file_path = date('Y-m-d');
-            // $p->image = $filename;
-            $p->price = $request->input('price');
-            $p->in_discount = $request->input('indiscount');
-            $p->discount = $request->input('discount');
-            $p->contenido = e($request->input('content'));
-            $img = $this->uploadImage($request);
-            $p->image = $img;
-            // if($p->save()):
-            //     if($request->hasFile('img')):
-            //         $fl = $request->img->storeAs($path, $filename, 'uploads');
-            //         $img = Image::make($file_file);
-            //         $img->fit(256,256,function($constraint){
-            //             $constraint->upsize();
-            //         });
-            //         $img->save($upload_path.'/'.$path.'/t_'.$filename);
-            //     endif;
-            //     return redirect('admin/products')->with('message','El producto ' . $p->name . ' se ha guardado exitosamente.')->with('typealert', 'success');
-            // else:
-            // endif;
-
-        // endif;
-
+        return redirect('admin/products')->with('message','El producto ' . $p->name . ' se ha guardado exitosamente.')->with('typealert', 'success');
     }
 }
