@@ -19,7 +19,9 @@ class ProductController extends Controller
         $this->middleware('isadmin');
     }
     public function getHome(){
-        return view('admin.products.home');
+        $products = Product::orderBy('id','desc')->paginate(25);
+        $data = ['products' => $products];
+        return view('admin.products.home', $data);
     }
     public function getProductAdd(){
         $cats = Category::where('module', '0')->pluck('name', 'id');
@@ -32,14 +34,15 @@ class ProductController extends Controller
         $prdImage = 'noDisponible.jpg';
 
         //subir imagen si fue enviada
-        //si enviaron archivo
+            //si enviaron archivo
         $img = $request->file('img');
 
         if( $request->file('img') ){
             //renombrar time() + extension
             $img = time().'.'.$request->file('img')->clientExtension();
             //subir
-            $request->file('img')->move(public_path('products/'), $img);
+
+            $request->file('img')->move( public_path('products/'), $img);
         }
 
         return $img;
@@ -55,25 +58,36 @@ class ProductController extends Controller
         $messages = [
             'name.required' => 'El nombre del producto es obligatorio',
             'img.required' => 'Seleccione una imagen destacada',
+            //'img.image' => 'El archivo no es una imagen',
             'price.required' => 'Ingrese el precio del producto',
         ];
 
         $request->validate($rules, $messages);
-
         $p = new Product;
         $p->status = '0';
         $p->name = e($request->input('name'));
         $p->slug = Str::slug($request->input('name'));
         $p->category_id = $request->input('category');
-        $p->file_path = public_path('productos/');
+        $p->file_path = public_path('products/');
+        // $p->image = $filename;
         $p->price = $request->input('price');
         $p->in_discount = $request->input('indiscount');
         $p->discount = $request->input('discount');
         $p->contenido = e($request->input('content'));
-        $img = $this->uploadImage($request);
-        $p->image = $img;
-        $p->save();
-
+        $imagen = $this->uploadImage($request);
+        $p->image = $imagen;
+        if($p->save()):
+            // open file a image resource
+            $img = Image::make($p->file_path.$p->image);
+            $img->fit(100,100,function($constraint){
+                $constraint->upsize();
+            });
+            $img->save($p->file_path.'t_'.$p->image);
+        endif;
         return redirect('admin/products')->with('message','El producto ' . $p->name . ' se ha guardado exitosamente.')->with('typealert', 'success');
+    }
+    public function getProductEdit()
+    {
+        return 'esto';
     }
 }
