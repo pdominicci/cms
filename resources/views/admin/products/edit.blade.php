@@ -29,7 +29,7 @@
                         </h2>
                     </div>
                     <div class="inside">
-                        {!! Form::open(['url' => '/admin/products/add', 'files' => true]) !!}
+                        {!! Form::open(['url' => '/admin/products/'.$p->id.'/edit', 'files' => true]) !!}
                         <div class="row">
 
                             <div class="col-md-6">
@@ -90,6 +90,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <label for="status">Estado</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1"><i class="far fa-keyboard"></i></span>
+                                    </div>
+                                    {!!Form::select('status', ['0' => 'Borrador', '1' => 'Publico'], $p->status, ['class' => 'custom-select']) !!}
+                                </div>
+                            </div>
                         </div>
 
 
@@ -117,7 +126,7 @@
                             <i class="far fa-image"></i>
                             Imagen Destacada
                             <div class="inside">
-                                <img src="../../../products/{{$p->image}}" alt="" class="img-fluid" width="">
+                                <img src="../../../{{$p->file_path.$p->image}}" alt="" class="img-fluid" width="">
                             </div>
                         </h2>
                     </div>

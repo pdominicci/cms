@@ -11,6 +11,12 @@
     </li>
 @endsection
 
+@if ( session('mensaje') )
+    <div class="alert alert-success">
+        {{ session('mensaje') }}
+    </div>
+@endif
+
 @section('content')
     <div class="container-fluid">
         <div class="panel">
@@ -43,8 +49,9 @@
                                  http://mycms.com/admin/products/1606681755.png no anda --}}
                             <td width="90">
                                 {{-- se le agrego fancybox en el href y en el master tambien se agregan dos scripts --}}
-                                <a href="../products/{{$product->image}}" data-fancybox="gallery">
-                                    <img src="../products/t_{{$product->image}}" alt="" class="img-thumbnail" width="90">
+                                <a href="../{{$product->file_path.$product->image}}" data-fancybox="gallery">
+                                    {{-- <img src="../products/{{$product->relCategory->name}}/t_{{$product->image}}" alt="" class="img-thumbnail" width="90"> --}}
+                                    <img src="../{{$product->file_path.$product->image}}" alt="" class="img-thumbnail" width="90">
                                 </a>
                             </td>
                             <td>{{$product->name}}</td>

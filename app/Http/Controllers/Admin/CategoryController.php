@@ -38,32 +38,17 @@ class CategoryController extends Controller
             'icon.required' => 'Se requiere de un nombre para el ícono',
         ];
 
-
         $request->validate($rules,$messages);
-        // $validator = Validator::make($request->all(), $rules, $messages);
-        // if($validator->fails()):
-            // return back()->withErrors($validator)->with('message','Se ha producido un error')->with('typealert', 'danger');
-        // else:
-            // se puede hacer con query builder
-            // DB::table('categories')
-            // ->where('id', $id)
-            // ->update([
-            //             'name' => e($request->input('name')),
-            //             'module' => $request->input('module'),
-            //             //'slug' => Str::slug($request->input('name')),
-            //             'icono' => e($request->input('icon')),
-            //         ]);
 
-            $c = Category::find($id);
-            $c->module = $request->input('module');
-            $c->name = e($request->input('name'));
-            $c->slug = Str::slug($request->input('name'));
-            $c->icono = e($request->input('icon'));
+        $c = Category::find($id);
+        $c->module = $request->input('module');
+        $c->name = e($request->input('name'));
+        $c->slug = Str::slug($request->input('name'));
+        $c->icono = e($request->input('icon'));
 
-            if($c->save()):
-                return back()->with('message','La categoría ' . $c->name . ' se ha guardado exitosamente.')->with('typealert', 'success');
-            endif;
-        // endif;
+        if($c->save()):
+            return back()->with('message','La categoría ' . $c->name . ' se ha guardado exitosamente.')->with('typealert', 'success');
+        endif;
     }
     public function categoryAdd(Request $request){
         $rules = [
