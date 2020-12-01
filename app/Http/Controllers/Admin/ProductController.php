@@ -19,7 +19,7 @@ class ProductController extends Controller
         $this->middleware('isadmin');
     }
     public function getHome(){
-        $products = Product::orderBy('id','desc')->paginate(25);
+        $products = Product::with('relCategory')->orderBy('id','desc')->paginate(25);
         $data = ['products' => $products];
         return view('admin.products.home', $data);
     }
@@ -86,8 +86,11 @@ class ProductController extends Controller
         endif;
         return redirect('admin/products')->with('message','El producto ' . $p->name . ' se ha guardado exitosamente.')->with('typealert', 'success');
     }
-    public function getProductEdit()
+    public function getProductEdit($id)
     {
-        return 'esto';
+        $p = Product::find($id);
+        $cats = Category::where('module', '0')->pluck('name', 'id');
+        $data = ['cats' => $cats, 'p' => $p];
+        return view('admin.products.edit', $data);
     }
 }
