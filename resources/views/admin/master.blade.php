@@ -100,6 +100,11 @@
                     </div>
                 @endif --}}
 
+                @if ( session('message') )
+                    <div class="alert alert-success">
+                        {{ session('message') }}
+                    </div>
+                @endif
                 @if ($errors->any())
                     <ul class="list-group col-8 mx-auto" id='errores'>
                         <li class="list-group-item bg-light text-danger">

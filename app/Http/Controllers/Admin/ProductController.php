@@ -44,7 +44,7 @@ class ProductController extends Controller
             //renombrar time() + extension
             $img = time().'.'.$request->file('img')->clientExtension();
             //subir
-            $c = Category::find($request->category);
+            $c = Category::findOrFail($request->category);
 
             $slug = Str::slug($c->name, '_');
 
@@ -102,7 +102,7 @@ class ProductController extends Controller
     }
     public function getProductEdit($id)
     {
-        $p = Product::find($id);
+        $p = Product::findOrFail($id);
         $cats = Category::where('module', '0')->pluck('name', 'id');
         $data = ['cats' => $cats, 'p' => $p];
         return view('admin.products.edit', $data);
@@ -120,7 +120,7 @@ class ProductController extends Controller
 
         $request->validate($rules, $messages);
 
-        $p = Product::find($id);
+        $p = Product::findOrFail($id);
 
         $p->status = $request->input('status');
         $p->name = e($request->name);

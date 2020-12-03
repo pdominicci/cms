@@ -20,7 +20,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="panel">
                     <div class="header">
                         <h2 class="title">
@@ -100,8 +100,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="row mtop16">
                             <div class="col-md-12">
                                 <label for="" class="content">Descripción</label>
@@ -119,7 +117,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="panel">
                     <div class="header">
                         <h2 class="title">
@@ -127,6 +125,25 @@
                             Imagen Destacada
                             <div class="inside">
                                 <img src="../../../{{$p->file_path.$p->image}}" alt="" class="img-fluid" width="">
+                            </div>
+                        </h2>
+                    </div>
+                </div>
+                <div class="panel shadow mtop16">
+                    <div class="header">
+                        <h2 class="title">
+                            <i class="far fa-images"></i>
+                            Galería
+                            <div class="inside product_gallery">
+                                {!! Form::open(['url' => '/admin/product'.$p->id.'/gallery/add', 'files' => true]) !!}
+                                <div class="custom-file">
+                                    {!! Form::file('file_image',['class' => 'custom-file-input', 'id' => 'product_file_image', 'accept' => 'image/*']) !!}
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                </div>
+                                {!! Form::close() !!}
+                                <div class="thumb">
+                                    <a href="#" id="btn_product_file_image" class="fas fa-plus" ></a>
+                                </div>
                             </div>
                         </h2>
                     </div>

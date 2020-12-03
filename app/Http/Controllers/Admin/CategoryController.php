@@ -24,7 +24,7 @@ class CategoryController extends Controller
         return view('admin.categories.home', $data);
     }
     public function getCategoryEdit($id){
-        $cat = Category::find($id);
+        $cat = Category::findOrFail($id);
         $data = ['cat' => $cat];
         return view('admin.categories.edit', $data);
     }
@@ -40,7 +40,7 @@ class CategoryController extends Controller
 
         $request->validate($rules,$messages);
 
-        $c = Category::find($id);
+        $c = Category::findOrFail($id);
         $c->module = $request->input('module');
         $c->name = e($request->input('name'));
         $c->slug = Str::slug($request->input('name'));
@@ -77,7 +77,7 @@ class CategoryController extends Controller
         // endif;
     }
     public function getCategoryDelete(Request $request, $id){
-        $c = Category::find($id);
+        $c = Category::findOrFail($id);
         if($c->delete()):
             return back()->with('message','La categoría ' . $c->name . ' se ha eliminado exitosamente.')->with('typealert', 'success');
         endif;
