@@ -1,7 +1,8 @@
 body
-    background-color: #f5f6fa
-    font-size: 12px
-    font-family: 'Roboto', sans-serif
+    background-color #f5f6fa
+    font-size 12px
+    font-family 'Roboto', sans-serif
+    font-weight 500
 
 h2,h3,h4,h5,ul,body,html
     padding 0px
@@ -13,14 +14,14 @@ h2,h3,h4,h5,ul,body,html
 .wrapper
     min-height: 100vh
     overflow hidden
-    .col1
-        float left
-        position relative
-        z-index 999
-        width 17%
+    // .col1
+    //     float left
+    //     position relative
+    //     z-index 999
+    //     width 17%
     .col2
         float left
-        width 83%
+        width 98%
 .sidebar
     back-color #ffffff
     min-height 100vh
@@ -61,18 +62,28 @@ h2,h3,h4,h5,ul,body,html
                         //box-shadow 0 0.5rem 1rem rgba(0,0,0,0.25)
                         text-decoration none
 .navbar
-    background-color #000
+    background-color #212529
     width 100%
     border-bottom 1px solid #a9aeb0
-    a
-        color #d32e16 !important
     .userinfo
+        color #fff !important
         float right
         .email
             margin-left 15px
             margin-right 15px
         .salir
             font-size 1.5em
+
+    .nav-link
+            color #d8d8d8 !important;
+            margin 0px 10px;
+            border-bottom 2px solid #343a40;
+
+            &:hover
+                color #fff !important;
+                border-bottom 2px solid #fff;
+
+
 .page
     padding-top 16px
     padding-bottom 16px
@@ -115,4 +126,5 @@ h2,h3,h4,h5,ul,body,html
         border-radius 4px
         border 1px solid #dedede
         padding 8px 12px
+
 

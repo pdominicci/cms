@@ -14,6 +14,7 @@
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="{{ url('/static/libs/ckeditor/ckeditor.js') }}"></script>
     <script src="{{ url('/static/js/admin.js') }}"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
@@ -28,43 +29,11 @@
 <body>
 
     <div class="wrapper">
-        <div class="col1">
+        <div class="">
             @include('admin.sidebar')
         </div>
         <div class="col2">
-            <div class="container-fluid">
-                <div class="row">
 
-                    <nav class="navbar navbar-expand-lg shadow">
-                        <div class="col-md-3">
-                        <div class="collapse navbar-collapse">
-                            <ul class="navbar-nav">
-                                <li class="nav-item">
-                                    <a href="{{ url('/admin') }}" class="nav-link">
-                                        <i class="fas fa-home" data-toggle="tooltip" data-placement="top" title="Ir a Dashboard"></i>
-                                        Dashboard
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        </div>
-                        <div class="col-md-8">
-                        <div class="row userinfo">
-
-                                <div class="name">
-                                    {{ Auth::user()->name }} {{ Auth::user()->lastname }}
-                                </div>
-                                <div class="email">
-                                    {{ Auth::user()->email }}
-
-                                </div>
-                                <a href=" {{ url('/logout') }} " data-toggle="tooltip" data-placement="bottom" title="Salir"><i class="salir fas fa-power-off"></i></a>
-
-                        </div>
-                        </div>
-                    </nav>
-                </div>
-            </div>
             <div class="page">
                 <div class="container-fluid">
                     <nav aria-label="breadcrumb shadow">
