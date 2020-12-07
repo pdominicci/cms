@@ -29,7 +29,7 @@
 <body>
 
     <div class="wrapper">
-        <div class="">
+        <div class="topbar">
             @include('admin.sidebar')
         </div>
         <div class="col2">

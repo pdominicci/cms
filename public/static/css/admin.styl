@@ -28,11 +28,7 @@ h2,h3,h4,h5,ul,body,html
     .section-top
         background-color #e6e6e6
         //box-shadow 0 0.5rem 1rem rgba(0,0,0,0.25)
-    .logo
-        display block
-        margin 0px auto
-        padding-top 12px
-        width 70%
+
     .user
         color !important
         padding 16px
@@ -61,27 +57,28 @@ h2,h3,h4,h5,ul,body,html
                         color #9e2210 !important
                         //box-shadow 0 0.5rem 1rem rgba(0,0,0,0.25)
                         text-decoration none
-.navbar
-    background-color #212529
-    width 100%
-    border-bottom 1px solid #a9aeb0
-    .userinfo
-        color #fff !important
-        float right
+.nav-link
+        color #d8d8d8 !important
+        margin 0px 10px
+        border-bottom 4px solid #343a40
+        &:hover
+            color #fff !important
+            border-bottom 3px solid #fff
+        .dropdown-toggle
+            display block
+            text-decoration none
+            color #fff !important
         .email
-            margin-left 15px
-            margin-right 15px
-        .salir
-            font-size 1.5em
-
-    .nav-link
-            color #d8d8d8 !important;
-            margin 0px 10px;
-            border-bottom 2px solid #343a40;
-
-            &:hover
-                color #fff !important;
-                border-bottom 2px solid #fff;
+            margin 0 10px
+.topbar
+    display inline-block
+    width 100%
+    .salir
+        margin 10px 50px
+        font-size 1.5em
+        color #AA2904
+        float right
+        text-decoration none
 
 
 .page
