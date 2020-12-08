@@ -18,4 +18,7 @@ Route::prefix('/admin')->group(function(){
     Route::get('/categories/{id}/edit', 'Admin\CategoryController@getCategoryEdit');
     Route::post('/categories/{id}/edit', 'Admin\CategoryController@postCategoryEdit');
     Route::get('/categories/{id}/delete', 'Admin\CategoryController@getCategoryDelete');
+
+    //map module
+    Route::get('/location', 'MapController@getLocation')->name('location');
 });

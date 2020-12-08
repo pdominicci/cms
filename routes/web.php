@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,4 +22,5 @@ Route::post('/register', 'ConnectController@postRegister')->name('register');
 Route::get('/recover', 'ConnectController@getRecover')->name('recover');
 Route::post('/recover', 'ConnectController@postRecover')->name('recover');
 Route::get('/logout', 'ConnectController@getLogout')->name('logout');
+
 
