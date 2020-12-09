@@ -21,7 +21,7 @@
     <div class="container-fluid">
         <div class="panel">
             <div class="inside">
-            <div class="row">Hardcodeado con Santa Rosa en MapController</div>
+            <div class="row">Hardcodeado con Santa Rosa en MapController <?php echo phpinfo() ?></div>
             <div class="row">{{ $geo->geoplugin_latitude }}</div>
             <div class="row">{{ $geo->geoplugin_longitude }}</div>
         </div>

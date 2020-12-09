@@ -12,19 +12,23 @@
         "fideloper/proxy": "^4.4",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.5",
-        "laravel/framework": "^7.0",
+        "laravel/framework": "^8.0",
+        "laravel/jetstream": "^1.6",
+        "laravel/sanctum": "^2.6",
         "laravel/socialite": "^5.0",
         "laravel/tinker": "^2.5",
-        "laravelcollective/html": "^6.2"
+        "laravel/ui": "^3.0",
+        "laravelcollective/html": "^6.2",
+        "livewire/livewire": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
         "barryvdh/laravel-ide-helper": "^2.8",
-        "facade/ignition": "^2.0",
+        "facade/ignition": "^2.3.6",
         "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.0",
-        "nunomaduro/collision": "^4.1",
-        "phpunit/phpunit": "^8.5.8|^9.3.3"
+        "nunomaduro/collision": "^5.0",
+        "phpunit/phpunit": "^9.0"
     },
     "config": {
         "optimize-autoloader": true,
