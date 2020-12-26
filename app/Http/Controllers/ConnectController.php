@@ -10,7 +10,7 @@ use App\User;
 class ConnectController extends Controller
 {
     public function __construct(){
-        $this->middleware('guest')->except(['getLogout']);    
+        $this->middleware('guest')->except(['getLogout']);
     }
     public function getLogin(){
         return view('connect.login');
@@ -80,7 +80,7 @@ class ConnectController extends Controller
             $user->email = e($request->input('email'));
             $user->password = Hash::make($request->input('password'));
 
-            if($user->save()): 
+            if($user->save()):
                 return redirect('/login')->with('message','Su usuario ha sido registrado exitosamente, ya puede iniciar sesión')->with('typealert', 'success');
             endif;
         endif;

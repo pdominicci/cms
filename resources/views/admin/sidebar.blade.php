@@ -32,13 +32,26 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">{{ Auth::user()->name }} {{ Auth::user()->lastname }}</span> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li class="nav-item">
-                            <div class="email">
-                                {{ Auth::user()->email }}
+                            <div class="hidden sm:flex sm:items-center sm:ml-6">
+                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                    {{ __('Administrar Cuenta') }}
+                                </div>
+
+                                <x-jet-dropdown-link href="{{ route('profile.show') }}">
+                                    {{ __('Perfil') }}
+                                </x-jet-dropdown-link>
                             </div>
                         </li>
                     </ul>
                 </li>
-                <a href="/logout" data-toggle="tooltip" data-placement="bottom" title="Salir" class="fas fa-power-off salir"></a>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <x-jet-dropdown-link href="{{ route('logout') }}" class="fas fa-power-off salir"
+                        onclick="event.preventDefault(); this.closest('form').submit();">
+                    </x-jet-dropdown-link>
+                </form>
+                {{-- <a href="{{ route('logout') }}" data-toggle="tooltip" data-placement="bottom" title="Salir" class="fas fa-power-off salir"></a> --}}
             </div>
         </div>
     </nav>

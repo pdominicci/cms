@@ -101,7 +101,6 @@
                             </div>
                         </div>
 
-
                         <div class="row mtop16">
                             <div class="col-md-12">
                                 <label for="" class="content">Descripción</label>
@@ -127,6 +126,22 @@
                             Imagen Destacada
                             <div class="inside">
                                 <img src="../../../{{$p->file_path.$p->image}}" alt="" class="img-fluid" width="">
+                            </div>
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="panel shadow mtop16">
+                    <div class="header">
+                        <h2 class="title">
+                            <i class="far fa-images"></i>
+                            Galería
+                            <div class="inside product_gallery">
+                                {!! Form::open(['url' => '/admin/product/'.$p->id.'gallery/add', 'files' => true]) !!}
+                                {!! Form::file('file_image', ['id' => 'product_file_image', 'accept' => 'image/*', 'style' => 'display: none;']) !!}
+                                {!! Form::close() !!}
+
+                                <div class="thumb"><a href="#" id="btn_product_file_image"><i class="fas fa-plus"></i></a></div>
                             </div>
                         </h2>
                     </div>

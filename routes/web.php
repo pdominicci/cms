@@ -13,7 +13,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('welcome');
 });
 // Route::get('/login', 'ConnectController@getLogin')->name('login');
 // Route::post('/login', 'ConnectController@postLogin')->name('login');
@@ -26,5 +26,5 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
+    return view('/dashboard');
 })->name('dashboard');
