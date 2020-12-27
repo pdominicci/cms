@@ -138,7 +138,7 @@
                             Galería
                             <div class="inside product_gallery">
                                 {!! Form::open(['url' => '/admin/product/'.$p->id.'gallery/add', 'files' => true]) !!}
-                                {!! Form::file('file_image', ['id' => 'product_file_image', 'accept' => 'image/*', 'style' => 'display: none;']) !!}
+                                {!! Form::file('file_image', ['id' => 'product_file_image', 'accept' => 'image/*', 'style' => 'display: none;', 'required']) !!}
                                 {!! Form::close() !!}
 
                                 <div class="thumb"><a href="#" id="btn_product_file_image"><i class="fas fa-plus"></i></a></div>

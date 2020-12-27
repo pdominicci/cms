@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Validator;
 use Illuminate\Support\Str;
 
-use App\Http\Models\Category;
+use App\Models\Category;
 
 
 class CategoryController extends Controller

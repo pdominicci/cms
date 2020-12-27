@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Http\Models\Category, App\Http\Models\Product;
+use App\Models\Category, App\Models\Product, App\Models\PGallery;
 
 use Validator;
 use Illuminate\Support\Str;
@@ -146,4 +146,33 @@ class ProductController extends Controller
 
         return redirect('admin/products')->with('message','El producto ' . $p->name . ' se ha modificado exitosamente.')->with('typealert', 'success');
     }
+    public function postProductGalleryAdd($request, $id){
+        $rules = [
+            // el key deberia ser el nombre que le pusimos al componente del form
+            'file_image' => 'required'
+        ];
+
+        $messages = [
+            'file_image.required' => 'Seleccione una imagen',
+        ];
+
+        $request->validate($rules, $messages);
+
+        $g = new PGallery;
+        $g->file_name = e($request->input('file_image'));
+        $imagen = $this->uploadImage($request);
+        $g->file_path = $this->relativeDirectory;
+        $g->image = $imagen;
+        if($g->save()){
+            // open file a image resource
+            $img = Image::make($this->directory.$g->image);
+            $img->fit(100,100,function($constraint){
+                $constraint->upsize();
+            });
+
+            $img->save($this->directory.'t_'.$g->image);
+        }
+
+    }
 }
+
