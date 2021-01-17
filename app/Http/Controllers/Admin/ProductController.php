@@ -146,32 +146,33 @@ class ProductController extends Controller
 
         return redirect('admin/products')->with('message','El producto ' . $p->name . ' se ha modificado exitosamente.')->with('typealert', 'success');
     }
-    public function postProductGalleryAdd($request, $id){
-        $rules = [
-            // el key deberia ser el nombre que le pusimos al componente del form
-            'file_image' => 'required'
-        ];
+    public function postProductGalleryAdd(Request $request, $id){
+        return 'hola';
+    //     $rules = [
+    //         // el key deberia ser el nombre que le pusimos al componente del form
+    //         'file_image' => 'required'
+    //     ];
 
-        $messages = [
-            'file_image.required' => 'Seleccione una imagen',
-        ];
+    //     $messages = [
+    //         'file_image.required' => 'Seleccione una imagen',
+    //     ];
 
-        $request->validate($rules, $messages);
+    //     $request->validate($rules, $messages);
 
-        $g = new PGallery;
-        $g->file_name = e($request->input('file_image'));
-        $imagen = $this->uploadImage($request);
-        $g->file_path = $this->relativeDirectory;
-        $g->image = $imagen;
-        if($g->save()){
-            // open file a image resource
-            $img = Image::make($this->directory.$g->image);
-            $img->fit(100,100,function($constraint){
-                $constraint->upsize();
-            });
+    //     $g = new PGallery;
+    //     $imagen = $id.'-'.$this->uploadImage($request);
+    //     $g->product_id = $id;
+    //     $g->file_path = $this->relativeDirectory;
+    //     $g->file_name = $imagen;
+    //     if($g->save()){
+    //         // open file a image resource
+    //         $img = Image::make($this->directory.$g->image);
+    //         $img->fit(100,100,function($constraint){
+    //             $constraint->upsize();
+    //         });
 
-            $img->save($this->directory.'t_'.$g->image);
-        }
+    //         $img->save($this->directory.'t_'.$g->imagen);
+    //     }
 
     }
 }

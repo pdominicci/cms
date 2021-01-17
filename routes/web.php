@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/frutipera', function(){
+    dd('frutipera');
+});
 // Route::get('/login', 'ConnectController@getLogin')->name('login');
 // Route::post('/login', 'ConnectController@postLogin')->name('login');
 // Route::get('/register', 'ConnectController@getRegister')->name('register');
