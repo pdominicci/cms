@@ -60,6 +60,38 @@ class ProductController extends Controller
 
         return $img;
     }
+    private function uploadImageGallery(Request $request, $id)
+    {
+        //si no enviaron imagen
+        $prdImage = 'noDisponible.jpg';
+
+        //subir imagen si fue enviada
+        //si enviaron archivo
+        $img = $request->file('file_image');
+
+        if( $request->file('file_image') ){
+            //renombrar time() + extension
+            $img = $id.'-'.time().'.'.$request->file('file_image')->clientExtension();
+            //subir
+
+            $p = Product::findOrFail($id);
+
+            $c = Category::findOrFail($p->category_id);
+
+            $slug = Str::slug($c->name, '_');
+
+            $this->directory = public_path('products/'.$slug.'/');
+            $this->relativeDirectory = 'products/'.$slug.'/';
+            if(!Storage::exists($this->directory)) {
+                //crea el directorio
+                Storage::makeDirectory($this->directory, 0775, true);
+            }
+
+            $request->file('file_image')->move($this->directory, $img);
+        }
+
+        return $img;
+    }
     public function postProductAdd(Request $request){
         $rules = [
             // el key deberia ser el nombre que le pusimos al componente del form
@@ -124,6 +156,7 @@ class ProductController extends Controller
 
         $p->status = $request->input('status');
         $p->name = e($request->name);
+        $p->slug = Str::slug($request->input('name'));
         $p->category_id = $request->category;
         $p->price = $request->input('price');
         $p->in_discount = $request->input('indiscount');
@@ -147,33 +180,60 @@ class ProductController extends Controller
         return redirect('admin/products')->with('message','El producto ' . $p->name . ' se ha modificado exitosamente.')->with('typealert', 'success');
     }
     public function postProductGalleryAdd(Request $request, $id){
-        return 'hola';
-    //     $rules = [
-    //         // el key deberia ser el nombre que le pusimos al componente del form
-    //         'file_image' => 'required'
-    //     ];
+        $rules = [
+            // el key deberia ser el nombre que le pusimos al componente del form
+            'file_image' => 'required'
+        ];
 
-    //     $messages = [
-    //         'file_image.required' => 'Seleccione una imagen',
-    //     ];
+        $messages = [
+            'file_image.required' => 'Seleccione una imagen',
+        ];
 
-    //     $request->validate($rules, $messages);
+        $request->validate($rules, $messages);
 
-    //     $g = new PGallery;
-    //     $imagen = $id.'-'.$this->uploadImage($request);
-    //     $g->product_id = $id;
-    //     $g->file_path = $this->relativeDirectory;
-    //     $g->file_name = $imagen;
-    //     if($g->save()){
-    //         // open file a image resource
-    //         $img = Image::make($this->directory.$g->image);
-    //         $img->fit(100,100,function($constraint){
-    //             $constraint->upsize();
-    //         });
+        $g = new PGallery;
+        $imagen = $this->uploadImageGallery($request, $id);
+        // dd($imagen);
+        $g->product_id = $id;
+        $g->file_path = $this->relativeDirectory;
+        $g->file_name = $imagen;
+        if($g->save()){
 
-    //         $img->save($this->directory.'t_'.$g->imagen);
-    //     }
+            // open file a image resource
+            $img = Image::make($this->directory.$g->file_name);
+            $img->save($this->directory.$g->file_name);
+            $img->fit(100,100,function($constraint){
+                $constraint->upsize();
+            });
 
+            $img->save($this->directory.'t_'.$g->file_name);
+        }
+        return back()->with('message','La imagen se ha guardado exitosamente.')->with('typealert', 'success');
     }
 }
+
+    // $p->status = '0';
+    // $p->name = e($request->input('name'));
+    // $p->slug = Str::slug($request->input('name'));
+    // $p->category_id = $request->input('category');
+    // // $p->image = $filename;
+    // $p->price = $request->input('price');
+    // $p->in_discount = $request->input('indiscount');
+    // $p->discount = $request->input('discount');
+    // $p->contenido = e($request->input('content'));
+    // $imagen = $this->uploadImage($request);
+    // $p->file_path = $this->relativeDirectory;
+    // $p->image = $imagen;
+    // if($p->save()){
+    //     // open file a image resource
+    //     $img = Image::make($this->directory.$p->image);
+    //     $img->fit(100,100,function($constraint){
+    //         $constraint->upsize();
+    //     });
+
+    //     $img->save($this->directory.'t_'.$p->image);
+    // }
+
+    // return redirect('admin/products')->with('message','El producto ' . $p->name . ' se ha guardado exitosamente.')->with('typealert', 'success');
+
 

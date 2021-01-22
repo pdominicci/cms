@@ -137,11 +137,24 @@
                             <i class="far fa-images"></i>
                             Galería
                             <div class="inside product_gallery">
-                                {!! Form::open(['url' => '/admin/products/gallery/add', 'files' => true, 'id' => 'form_product_gallery']) !!}
+                                {!! Form::open(['url' => '/admin/products/'.$p->id.'/gallery/add', 'files' => true, 'id' => 'form_product_gallery']) !!}
                                 {!! Form::file('file_image', ['id' => 'product_file_image', 'accept' => 'image/*', 'style' => 'display: none;', 'required']) !!}
                                 {!! Form::close() !!}
 
-                                <div class="thumb"><a href="#" id="btn_product_file_image"><i class="fas fa-plus"></i></a></div>
+                                <div class="btn-submit">
+                                    <a href="#" id="btn_product_file_image"><i class="fas fa-plus"></i></a>
+                                </div>
+
+                                <div class="thumbs">
+                                    @foreach ($p->getGallery as $img)
+                                        <div class="thumb">
+                                            <a href="#">
+                                                <i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top" title="Eliminar Producto"></i>
+                                            </a>
+                                        </div>
+                                        <img src="../../../{{$img->file_path.'/t_'.$img->file_name}}">
+                                    @endforeach
+                                </div>
                             </div>
                         </h2>
                     </div>
