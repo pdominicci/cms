@@ -5,6 +5,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CountryController;
 
 Route::prefix('/admin')->group(function(){
     // Route::get('/', [DashboardController::class,'getDashboard']);
@@ -29,4 +31,10 @@ Route::prefix('/admin')->group(function(){
 
     //map module
     Route::get('/location', 'MapController@getLocation')->name('location');
+
+    Route::get('/countries', [CountryController::class, 'index']);
+    Route::get('/countries/add', [CountryController::class, 'create']);
+    Route::post('/countries/add', [CountryController::class, 'store']);
+    // Route::get('/modificarCategoria/{idCategoria}', [CategoriaController::class, 'edit']);
+    // Route::post('/modificarCategoria/{idCategoria}', [CategoriaController::class, 'update']);
 });

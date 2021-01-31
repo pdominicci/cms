@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Country;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CountryController extends Controller
 {
@@ -14,7 +15,9 @@ class CountryController extends Controller
      */
     public function index()
     {
-        //
+        $countries = Country::orderBy('country', 'asc')->get();
+        $data = ['countries' => $countries];
+        return view('admin.countries.home', $data);
     }
 
     /**
@@ -24,7 +27,7 @@ class CountryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.countries.add');
     }
 
     /**
@@ -35,7 +38,16 @@ class CountryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $country = $request->input('country');
+
+        $this->validar($request);
+
+        //guardar en la bd
+        $Country = new Country;
+        $Country->country = $country;
+        $Country->save();
+
+        return redirect('admin/countries')->with('mensaje', 'El País '. $country . ' se agregó correctamente.');
     }
 
     /**
@@ -81,5 +93,18 @@ class CountryController extends Controller
     public function destroy(Country $country)
     {
         //
+    }
+    public function validar(Request $request){
+        $request->validate(
+            [
+                'country' => 'required|min:2|max:60'
+            ],
+            [
+                'country.required' => 'El campo es obligatorio',
+                'country.min'=> 'El campo nombre debe tener al menos dos caracteres',
+                'country.max'=> 'El campo nombre debe tener como máximo 60 caracteres',
+            ]
+        );
+
     }
 }

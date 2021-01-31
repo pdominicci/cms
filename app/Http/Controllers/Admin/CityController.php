@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\State;
+use App\Models\City;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class StateController extends Controller
+class CityController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +42,10 @@ class StateController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\State  $state
+     * @param  \App\Models\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function show(State $state)
+    public function show(City $city)
     {
         //
     }
@@ -52,10 +53,10 @@ class StateController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\State  $state
+     * @param  \App\Models\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function edit(State $state)
+    public function edit(City $city)
     {
         //
     }
@@ -64,10 +65,10 @@ class StateController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\State  $state
+     * @param  \App\Models\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, State $state)
+    public function update(Request $request, City $city)
     {
         //
     }
@@ -75,10 +76,10 @@ class StateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\State  $state
+     * @param  \App\Models\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function destroy(State $state)
+    public function destroy(City $city)
     {
         //
     }

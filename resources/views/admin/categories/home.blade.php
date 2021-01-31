@@ -3,12 +3,12 @@
 @section('title', 'Categorías ')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item">        
+    <li class="breadcrumb-item">
         <a href="{{ url('/admin/categories') }}">
             <i class="fas fa-folder"></i>
             Categorías
-        </a>        
-    </li>  
+        </a>
+    </li>
 
 @endsection
 
@@ -21,7 +21,7 @@
                         <h2 class="title">
                             <i class="fas fa-plus"></i>
                             Agregar Categoría
-                        </h2>            
+                        </h2>
                     </div>
 
                     <div class="inside">
@@ -61,14 +61,14 @@
                         <h2 class="title">
                             <i class="fas fa-folder"></i>
                             Categorías
-                        </h2>            
+                        </h2>
                     </div>
 
                     <div class="inside">
-                        <nav class="nav"> 
+                        <nav class="nav">
                             @foreach (getModulesArray() as $m => $k)
                                 <a href="{{ url('/admin/categories/'.$m) }}" class="nav-link"><i class="fas fa-list"></i> {{ $k }}</a>
-                            @endforeach                            
+                            @endforeach
                         </nav>
                         <table class="table mtop16">
                             <thead>
@@ -85,7 +85,7 @@
                                     <td class='celdaicono'>{!! htmlspecialchars_decode($cat->icono) !!}</td>
                                     <td>{{$cat->name}}</td>
                                     <td>
-                                        <div class="opts">                                            
+                                        <div class="opts">
                                             <a href="{{url('/admin/categories/'.$cat->id.'/edit')}}">
                                                 <i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="Modificar Categoría"></i>
                                             </a>
