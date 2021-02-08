@@ -11,8 +11,32 @@ document.addEventListener('DOMContentLoaded', function(){
     })
 })
 
+$.ajaxSetup({
+    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+});
+
 $(document).ready(function(){
+    //// combo anidado pais provincia
+    $('#country').on('change',function(e) {
+        var country_id = e.target.value;
+        $.ajax({
+            url:"/admin/state",
+            type:"POST",
+            data: {
+                country_id: country_id
+            },
+            success:function(data){
+                $('#state').empty();
+                $.each(data.states[0].states,function(country,state){
+                    $('#state').append('<option value="'+state.id+'">'+state.state+'</option>');
+                })
+            }
+        })
+    });
+
     editor_init('editor');
+
+
 })
 
 function editor_init(field){
@@ -24,3 +48,8 @@ function editor_init(field){
         ]
     });
 }
+
+
+
+
+

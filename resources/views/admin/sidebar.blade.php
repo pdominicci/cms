@@ -19,14 +19,40 @@
                     <i class="fas fa-boxes" data-toggle="tooltip" data-placement="top" title="Administrar Productos"></i>
                     Productos
                 </a>
-                <a class="nav-item nav-link mr-3" href="/admin/categories/0">
-                    <i class="fas fa-folder" data-toggle="tooltip" data-placement="top" title="Administrar Categorías"></i>
-                    Categorías
-                </a>
                 <a class="nav-item nav-link mr-3" href="/admin/users">
                     <i class="fas fa-users" data-toggle="tooltip" data-placement="top" title="Administrar Usuarios"></i>
                     Usuarios
                 </a>
+
+                {{-- <a class="nav-item nav-link mr-3" href="/admin/categories/0">
+                    <i class="fas fa-folder" data-toggle="tooltip" data-placement="top" title="Administrar Categorías"></i>
+                    Categorías
+                </a> --}}
+
+                <li class="dropdown nav-link">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">Configuración</span> <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-item">
+                            <div class="hidden sm:flex sm:items-center sm:ml-6">
+                                <x-jet-dropdown-link href="#">
+                                    Empresas
+                                </x-jet-dropdown-link>
+                                <x-jet-dropdown-link href="/admin/categories/0">
+                                    Categorías
+                                </x-jet-dropdown-link>
+                                <x-jet-dropdown-link href="/admin/cities">
+                                    Ciudades
+                                </x-jet-dropdown-link>
+                                <x-jet-dropdown-link href="/admin/states">
+                                    Provincias
+                                </x-jet-dropdown-link>
+                                <x-jet-dropdown-link href="/admin/countries">
+                                    Países
+                                </x-jet-dropdown-link>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
 
                 <li class="dropdown nav-link">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">{{ Auth::user()->name }} {{ Auth::user()->lastname }}</span> <span class="caret"></span></a>

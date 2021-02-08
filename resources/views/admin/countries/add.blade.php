@@ -25,7 +25,7 @@
             <form action="/admin/countries/add" method="post">
                 @csrf
                 <div class="form-group">
-                    <label for="country">Nombre del País</label>
+                    <label for="country">País</label>
                     <input type="text" name="country"
                            class="form-control" id="country">
                 </div>
@@ -35,14 +35,4 @@
                 </a>
             </form>
         </div>
-
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
     @endsection

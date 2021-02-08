@@ -8,6 +8,10 @@ use App\Http\Controllers\Controller;
 
 class CountryController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+        $this->middleware('isadmin');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,6 +23,21 @@ class CountryController extends Controller
         $data = ['countries' => $countries];
         return view('admin.countries.home', $data);
     }
+    public function country(){
+        $countries = Country::get();
+
+        return view('country',['countries' => $countries]);
+    }
+    public function state(Request $request)
+    {
+        $state_id = $request->country_id;
+        $states = Country::where('id',$state_id)
+                              ->with('states')
+                              ->get();
+        $data = ['states' => $states];
+        return response()->json($data);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -97,12 +116,13 @@ class CountryController extends Controller
     public function validar(Request $request){
         $request->validate(
             [
-                'country' => 'required|min:2|max:60'
+                'country' => 'required|min:3|max:60|unique:App\Models\Country'
             ],
             [
-                'country.required' => 'El campo es obligatorio',
-                'country.min'=> 'El campo nombre debe tener al menos dos caracteres',
-                'country.max'=> 'El campo nombre debe tener como máximo 60 caracteres',
+                'country.required' => 'El país es obligatorio',
+                'country.min'=> 'El país debe tener al menos dos caracteres',
+                'country.max'=> 'El país debe tener como máximo 60 caracteres',
+                'country.unique'=> 'El país ingresado ya existe',
             ]
         );
 

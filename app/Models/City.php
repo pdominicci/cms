@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class City extends Model
 {
     use HasFactory;
+
+    public function relCountry()
+    {
+        return $this->hasOne(Country::class,'id','country_id');
+    }
+
+    public function relState()
+    {
+        return $this->hasOne(State::class,'id','state_id');
+    }
 }

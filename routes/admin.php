@@ -3,19 +3,21 @@
 // namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CountryController;
+use App\Http\Controllers\Admin\StateController;
+use App\Http\Controllers\Admin\CityController;
 
 Route::prefix('/admin')->group(function(){
-    // Route::get('/', [DashboardController::class,'getDashboard']);
+    Route::get('/', [DashboardController::class,'getDashboard']);
 
     Route::get('/users',[UserController::class,'getUsers']);
 
     //Module Products-
-    Route::get('/products', [ProductController::class,'getHome']
-    );
+    Route::get('/products', [ProductController::class,'getHome']);
     Route::get('/products/add', [ProductController::class,'getProductAdd']);
     Route::post('/products/add', [ProductController::class,'postProductAdd']);
     Route::get('/product/{idMarca}/edit',[ProductController::class,'getProductEdit']);
@@ -37,4 +39,16 @@ Route::prefix('/admin')->group(function(){
     Route::post('/countries/add', [CountryController::class, 'store']);
     // Route::get('/modificarCategoria/{idCategoria}', [CategoriaController::class, 'edit']);
     // Route::post('/modificarCategoria/{idCategoria}', [CategoriaController::class, 'update']);
+
+    Route::get('/states', [StateController::class, 'index']);
+    Route::get('/states/add', [StateController::class, 'create']);
+    Route::post('/states/add', [StateController::class, 'store']);
+
+    Route::get('/cities', [CityController::class, 'index']);
+    Route::get('/cities/add', [CityController::class, 'create']);
+    Route::post('/cities/add', [CityController::class, 'store']);
+
+    Route::get('/country', [CountryController::class, 'country']);
+    Route::post('/state', [CountryController::class, 'state']);
 });
+

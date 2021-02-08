@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Validator, Hash, Auth;
-use App\User;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class ConnectController extends Controller
 {
@@ -52,7 +54,7 @@ class ConnectController extends Controller
         $rules = [
             'name' => 'required',
             'lastname' => 'required',
-            'email' => 'required|email|unique:App\User,email',
+            'email' => 'required|email|unique:App\Models\User,email',
             'password' => 'required|min:8',
             'cpassword' => 'required|min:8|same:password',
         ];

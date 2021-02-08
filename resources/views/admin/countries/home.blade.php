@@ -6,7 +6,7 @@
     <li class="breadcrumb-item">
         <a href="{{ url('/admin/countries') }}">
             <i class="fas fa-globe-americas"></i>
-            Countries
+            Países
         </a>
     </li>
 
