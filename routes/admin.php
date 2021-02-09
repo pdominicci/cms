@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\StateController;
 use App\Http\Controllers\Admin\CityController;
+use App\Http\Controllers\Admin\CompanyController;
 
 Route::prefix('/admin')->group(function(){
     Route::get('/', [DashboardController::class,'getDashboard']);
@@ -48,7 +49,13 @@ Route::prefix('/admin')->group(function(){
     Route::get('/cities/add', [CityController::class, 'create']);
     Route::post('/cities/add', [CityController::class, 'store']);
 
+    // para los combos anidados
     Route::get('/country', [CountryController::class, 'country']);
     Route::post('/state', [CountryController::class, 'state']);
+    Route::post('/city', [CountryController::class, 'city']);
+
+    Route::get('/companies', [CompanyController::class, 'index']);
+    Route::get('/companies/add', [CompanyController::class, 'create']);
+    Route::post('/companies/add', [CompanyController::class, 'store']);
 });
 

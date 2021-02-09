@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Country;
+use App\Models\State;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -30,14 +31,22 @@ class CountryController extends Controller
     }
     public function state(Request $request)
     {
-        $state_id = $request->country_id;
-        $states = Country::where('id',$state_id)
-                              ->with('states')
-                              ->get();
+        $country_id = $request->country_id;
+        $states = Country::where('id',$country_id)
+                         ->with('states')
+                         ->get();
         $data = ['states' => $states];
         return response()->json($data);
     }
-
+    public function city(Request $request)
+    {
+        $state_id = $request->state_id;
+        $cities = State::where('id',$state_id)
+                         ->with('cities')
+                         ->get();
+        $data = ['cities' => $cities];
+        return response()->json($data);
+    }
 
     /**
      * Show the form for creating a new resource.

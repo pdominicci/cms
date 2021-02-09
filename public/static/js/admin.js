@@ -34,6 +34,23 @@ $(document).ready(function(){
         })
     });
 
+    $('#state').on('change',function(e) {
+        var state_id = e.target.value;
+        $.ajax({
+            url:"/admin/city",
+            type:"POST",
+            data: {
+                state_id: state_id
+            },
+            success:function(data){
+                $('#city').empty();
+                $.each(data.cities[0].cities,function(state,city){
+                    $('#city').append('<option value="'+city.id+'">'+city.city+'</option>');
+                })
+            }
+        })
+    });
+
     editor_init('editor');
 
 

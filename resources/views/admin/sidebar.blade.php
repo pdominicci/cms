@@ -34,7 +34,7 @@
                     <ul class="dropdown-menu">
                         <li class="nav-item">
                             <div class="hidden sm:flex sm:items-center sm:ml-6">
-                                <x-jet-dropdown-link href="#">
+                                <x-jet-dropdown-link href="/admin/companies">
                                     Empresas
                                 </x-jet-dropdown-link>
                                 <x-jet-dropdown-link href="/admin/categories/0">

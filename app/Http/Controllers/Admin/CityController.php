@@ -43,7 +43,7 @@ class CityController extends Controller
                     'states'=>$states
                 ];
 
-        return  view('admin.cities.add', $data);
+        return view('admin.cities.add', $data);
     }
 
     /**
@@ -54,16 +54,13 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        $country_id = $request->input('country_id');
-        $state_id = $request->input('state_id');
         $city = $request->input('city');
-
         $this->validar($request);
 
         //guardar en la bd
         $City = new City;
-        $City->country_id = $country_id;
-        $City->state_id = $state_id;
+        $City->country_id = $this->country_id;
+        $City->state_id = $this->state_id;
         $City->city = $city;
         $City->save();
 

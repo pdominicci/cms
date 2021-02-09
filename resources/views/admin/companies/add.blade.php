@@ -1,12 +1,12 @@
 @extends('admin.master')
 
-    @section('title', 'Ciudades ')
+    @section('title', 'Empresas ')
 
     @section('breadcrumb')
     <li class="breadcrumb-item">
-        <a href="{{ url('/admin/cities') }}">
-            <i class="fas fa-globe-americas"></i>
-            Ciudades
+        <a href="{{ url('/admin/companies') }}">
+            <i class="far fa-copyright"></i>
+            Empresas
         </a>
     </li>
 
@@ -22,7 +22,7 @@
 
         <div class="alert bg-light border border-white shadow round col-8 mx-auto p-4">
 
-            <form action="/admin/cities/add" method="post">
+            <form action="/admin/companies/add" method="post">
                 @csrf
                 <label for="country">País</label>
                 <select class="browser-default custom-select" name="country_id" id="country">
@@ -35,11 +35,9 @@
                 <select class="browser-default custom-select" name="state_id" id="state">
                 </select>
                 <br>
-                <div class="form-group">
-                    <label for="city">Ciudad</label>
-                    <input type="text" name="city"
-                           class="form-control" id="city">
-                </div>
+                <label for="city">Ciudad</label>
+                <select class="browser-default custom-select" name="city_id" id="city">
+                </select>
                 <button class="btn btn-dark mr-3">Guardar</button>
                 <a href="/admin/cities/home" class="btn btn-outline-secondary">
                     Volver
