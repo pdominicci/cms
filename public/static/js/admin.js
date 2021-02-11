@@ -27,6 +27,7 @@ $(document).ready(function(){
             },
             success:function(data){
                 $('#state').empty();
+                $('#state').append('<option selected>Seleccionar Provincia</option>');
                 $.each(data.states[0].states,function(country,state){
                     $('#state').append('<option value="'+state.id+'">'+state.state+'</option>');
                 })

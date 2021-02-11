@@ -127,9 +127,5 @@ class CityController extends Controller
                 'city.unique'=> 'La ciudad ingresada ya existe para la provincia y país seleccionados'
             ]
         );
-
-
-
-
     }
 }

@@ -42,8 +42,8 @@ class CountryController extends Controller
     {
         $state_id = $request->state_id;
         $cities = State::where('id',$state_id)
-                         ->with('cities')
-                         ->get();
+                       ->with('cities')
+                       ->get();
         $data = ['cities' => $cities];
         return response()->json($data);
     }

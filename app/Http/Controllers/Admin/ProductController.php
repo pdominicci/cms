@@ -11,7 +11,6 @@ use Validator;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
-
 class ProductController extends Controller
 {
     private $directory;

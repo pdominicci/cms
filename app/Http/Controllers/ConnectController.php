@@ -62,8 +62,8 @@ class ConnectController extends Controller
         $messages = [
             'name.required' => 'Su nombre es requerido.',
             'lastname.required' => 'Su apellido es requerido.',
-            'email.required' => 'Su correo e-mail es requerido.',
-            'email.email' => 'El formato de su e-mail es inválido',
+            'email.required' => 'Su e-mail es requerido.',
+            'email.email' => 'El formato del e-mail es inválido',
             'email.unique' => 'Ya existe un usuario registrado con el e-mail ingresado',
             'password.required' => 'Por favor ingrese una contraseña.',
             'password.min' => 'La clave debe tener al menos 8 caracteres.',

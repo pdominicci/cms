@@ -8,9 +8,19 @@ use App\Models\State;
 use App\Models\City;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CompanyController extends Controller
 {
+    public function __construct(Request $request){
+        $this->middleware('auth');
+        $this->middleware('isadmin');
+        $this->company = $request->input('company');
+        $this->email = $request->input('email');
+        $this->phone = $request->input('phone');
+        $this->city_id = $request->input('city_id');
+        $this->address = $request->input('address');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -50,20 +60,19 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        $country_id = $request->input('country_id');
-        $state_id = $request->input('state_id');
-        $city = $request->input('city');
-
         $this->validar($request);
 
-        //guardar en la bd
-        $City = new City;
-        $City->country_id = $country_id;
-        $City->state_id = $state_id;
-        $City->city = $city;
-        $City->save();
+        $Company = new Company;
+        $Company->company = $this->company;
+        $Company->slug = Str::slug($Company->company, '');
+        $Company->email = $this->email;
+        $Company->phone = $this->phone;
+        $Company->city_id = $this->city_id;
+        $Company->address = $this->address;
 
-        return redirect('admin/cities')->with('mensaje', 'La ciudad '. $city . ' se agregó correctamente.');
+        $Company->save();
+
+        return redirect('admin/companies')->with('mensaje', 'La empresa '. $this->company . ' se agregó correctamente.');
     }
 
     /**
@@ -109,5 +118,29 @@ class CompanyController extends Controller
     public function destroy(Company $company)
     {
         //
+    }
+    public function validar(Request $request){
+        $request->validate(
+            [
+                'company' => 'required|min:2|max:100',
+                'email' => 'required|email|unique:App\Models\Company',
+                'phone' => 'required',
+                'country_id' => 'required',
+                'state_id' => 'required',
+                'city_id' => 'required',
+                'address' => 'required',
+            ],
+            [
+                'company.required' => 'El nombre de la empresa es obligatorio',
+                'company.min' => 'El nombre de la empresa debe tener al menos 2 caracteres',
+                'company.max' => 'El nombre de la empresa debe tener como máximo 100 caracteres',
+                'email.required' => 'El e-mail es obligatorio',
+                'email.email' => 'El formato del e-mail es inválido',
+                'email.unique' => 'El e-mail ingresado ya existe',
+                'country_id.required' => 'El País es obligatorio',
+                'state_id.required' => 'La Provincia es obligatoria',
+                'city_id.required'=> 'La Ciudad es obligatoria',
+            ]
+        );
     }
 }

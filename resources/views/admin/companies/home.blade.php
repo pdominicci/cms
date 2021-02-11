@@ -24,9 +24,8 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>País</th>
-                <th>Provincia</th>
-                <th>Ciudad</th>
+                <th>Nombre</th>
+                <th>Email</th>
                 <th colspan="2">
                     <a href="/admin/companies/add" class="btn btn-dark">
                         Agregar
@@ -37,10 +36,9 @@
         <tbody>
             @foreach ($companies as $c)
             <tr>
-            <td>{{ $c->id }}</td>
-                <td>{{ $c->relCountry->country }}</td>
-                <td>{{ $c->relState->state }}</td>
-                <td>{{ $c->city }}</td>
+                <td>{{ $c->id }}</td>
+                <td>{{ $c->company }}</td>
+                <td>{{ $c->email }}</td>
                 <td>
                     <a href="/admin/companies/update/{{ $c->id }}" class="btn btn-outline-secondary">
                         Modificar
