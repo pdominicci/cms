@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Country;
 use App\Models\State;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -47,7 +48,16 @@ class CountryController extends Controller
         $data = ['cities' => $cities];
         return response()->json($data);
     }
+    public function company(Request $request)
+    {
+        $city_id = $request->city_id;
 
+        $companies = Company::where('city_id',$city_id)
+                       ->with('companies')
+                       ->get();
+        $data = ['companies' => $companies];
+        return response()->json($data);
+    }
     /**
      * Show the form for creating a new resource.
      *

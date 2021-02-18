@@ -26,8 +26,10 @@ $(document).ready(function(){
                 country_id: country_id
             },
             success:function(data){
-                $('#state').empty();
-                $('#state').append('<option selected>Seleccionar Provincia</option>');
+                $('#state').empty().append('<option selected>Seleccionar Provincia</option>');;
+                $('#city').empty().append('<option selected="selected">Seleccionar Ciudad</option>')
+                $('#company').empty().append('<option selected="selected">Seleccionar Empresa</option>')
+
                 $.each(data.states[0].states,function(country,state){
                     $('#state').append('<option value="'+state.id+'">'+state.state+'</option>');
                 })
@@ -44,9 +46,27 @@ $(document).ready(function(){
                 state_id: state_id
             },
             success:function(data){
-                $('#city').empty();
+                $('#city').empty().append('<option selected="selected">Seleccionar Ciudad</option>')
+                $('#company').empty().append('<option selected="selected">Seleccionar Empresa</option>')
                 $.each(data.cities[0].cities,function(state,city){
                     $('#city').append('<option value="'+city.id+'">'+city.city+'</option>');
+                })
+            }
+        })
+    });
+
+    $('#city').on('change',function(e) {
+        var city_id = e.target.value;
+        $.ajax({
+            url:"/admin/company",
+            type:"POST",
+            data: {
+                city_id: city_id
+            },
+            success:function(data){
+                $('#company').empty().append('<option selected="selected">Seleccionar Empresa</option>')
+                $.each(data.companies,function(city,company){
+                    $('#company').append('<option value="'+company.id+'">'+company.company+'</option>');
                 })
             }
         })

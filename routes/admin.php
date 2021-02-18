@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\StateController;
 use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\CompanyController;
+use App\Http\Controllers\Admin\UserCompaniesController;
 
 Route::prefix('/admin')->group(function(){
     Route::get('/', [DashboardController::class,'getDashboard']);
@@ -53,9 +54,14 @@ Route::prefix('/admin')->group(function(){
     Route::get('/country', [CountryController::class, 'country']);
     Route::post('/state', [CountryController::class, 'state']);
     Route::post('/city', [CountryController::class, 'city']);
+    Route::post('/company', [CountryController::class, 'company']);
 
     Route::get('/companies', [CompanyController::class, 'index']);
     Route::get('/companies/add', [CompanyController::class, 'create']);
     Route::post('/companies/add', [CompanyController::class, 'store']);
+
+    Route::get('/usercompanies/{id}', [UserCompaniesController::class, 'index']);
+    Route::get('/usercompanies/add/{id}', [UserCompaniesController::class, 'create']);
+    Route::post('/usercompanies/add/{id}', [UserCompaniesController::class, 'store']);
 });
 
