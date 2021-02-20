@@ -72,6 +72,24 @@ $(document).ready(function(){
         })
     });
 
+    $('#email').on('change',function(e) {
+        var email = e.target.value;
+        console.log('aaaaaaaaaaa ' +email);
+        // $.ajax({
+        //     url:"/admin/company",
+        //     type:"POST",
+        //     data: {
+        //         city_id: city_id
+        //     },
+        //     success:function(data){
+        //         $('#company').empty().append('<option selected="selected">Seleccionar Empresa</option>')
+        //         $.each(data.companies,function(city,company){
+        //             $('#company').append('<option value="'+company.id+'">'+company.company+'</option>');
+        //         })
+        //     }
+        // })
+    });
+
     editor_init('editor');
 
 

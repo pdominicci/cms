@@ -1,3 +1,7 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="{{ url('/static/js/login.js?='.time()) }}"></script>
+@CSRF
 <x-guest-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
@@ -23,6 +27,12 @@
             <div class="mt-4">
                 <x-jet-label for="password" value="{{ __('Password') }}" />
                 <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label for="usercompanies" value="{{__('Empresas')}}"/>
+                <select name="company_id" id="usercompanies">
+                </select>
             </div>
 
             <div class="block mt-4">

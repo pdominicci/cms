@@ -210,29 +210,3 @@ class ProductController extends Controller
         return back()->with('message','La imagen se ha guardado exitosamente.')->with('typealert', 'success');
     }
 }
-
-    // $p->status = '0';
-    // $p->name = e($request->input('name'));
-    // $p->slug = Str::slug($request->input('name'));
-    // $p->category_id = $request->input('category');
-    // // $p->image = $filename;
-    // $p->price = $request->input('price');
-    // $p->in_discount = $request->input('indiscount');
-    // $p->discount = $request->input('discount');
-    // $p->contenido = e($request->input('content'));
-    // $imagen = $this->uploadImage($request);
-    // $p->file_path = $this->relativeDirectory;
-    // $p->image = $imagen;
-    // if($p->save()){
-    //     // open file a image resource
-    //     $img = Image::make($this->directory.$p->image);
-    //     $img->fit(100,100,function($constraint){
-    //         $constraint->upsize();
-    //     });
-
-    //     $img->save($this->directory.'t_'.$p->image);
-    // }
-
-    // return redirect('admin/products')->with('message','El producto ' . $p->name . ' se ha guardado exitosamente.')->with('typealert', 'success');
-
-

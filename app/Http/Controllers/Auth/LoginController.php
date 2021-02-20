@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserCompanies;
+use App\Models\User;
+use Illuminate\Http\Request;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
@@ -36,5 +40,31 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+    // public function index()
+    // {
+    //     $data = ["usercompanies" => []];
+    //     return view('auth.login', $data);
+    // }
+    public function usercompanies(Request $request)
+    {
+        // $user = DB::table("users")->where('email', $request->email)->first();
+        // dd("aaa " .$user);
+        $user = User::where('email', $request->email)->first();
+
+        //$user = User::find($request->email);
+        if ($user) {
+            $usercompanies = UserCompanies::where('user_id', $user->id)->get();
+            $data = [];
+            $item = [];
+            foreach($usercompanies as $uc){
+                $item = ["company_id" => $uc->company_id, "company" => $uc->companies->company];
+                array_push($data, $item);
+            }
+        } else {
+            $data = [];
+        }
+        return response()->json($data);
+        //return view('auth.login'); //, $data);
     }
 }
