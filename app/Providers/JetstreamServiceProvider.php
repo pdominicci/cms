@@ -2,25 +2,23 @@
 
 namespace App\Providers;
 
-use Laravel\Fortify\Actions\AttemptToAuthenticate;
-use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
-use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
-use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
-use Laravel\Fortify\Fortify;
-use Illuminate\Http\Request;
+// se puso manualmente para controlar lo que hace en el login pero luego se saco
+// use Laravel\Fortify\Actions\AttemptToAuthenticate;
+// use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
+// use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
+// use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
+// use Laravel\Fortify\Fortify;
+// use Illuminate\Http\Request;
 
-Fortify::authenticateThrough(function (Request $request) {
-    //dd($request->email);
-    return array_filter([
-            config('fortify.limiters.login') ? null : EnsureLoginIsNotThrottled::class,
-            RedirectIfTwoFactorAuthenticatable::class,
-            AttemptToAuthenticate::class,
-            PrepareAuthenticatedSession::class,
-    ]);
-});
-
-
-
+// Fortify::authenticateThrough(function (Request $request) {
+//     //dd($request->email);
+//     return array_filter([
+//             config('fortify.limiters.login') ? null : EnsureLoginIsNotThrottled::class,
+//             RedirectIfTwoFactorAuthenticatable::class,
+//             AttemptToAuthenticate::class,
+//             PrepareAuthenticatedSession::class,
+//     ]);
+// });
 
 use App\Actions\Jetstream\DeleteUser;
 use Illuminate\Support\ServiceProvider;

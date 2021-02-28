@@ -63,5 +63,7 @@ Route::prefix('/admin')->group(function(){
     Route::get('/usercompanies/{id}', [UserCompaniesController::class, 'index']);
     Route::get('/usercompanies/add/{id}', [UserCompaniesController::class, 'create']);
     Route::post('/usercompanies/add/{id}', [UserCompaniesController::class, 'store']);
+
+    Route::post('/upload', [ProductController::class, 'upload']);
 });
 

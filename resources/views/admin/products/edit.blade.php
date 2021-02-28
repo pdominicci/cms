@@ -1,5 +1,6 @@
 @extends('admin.master')
 
+
 @section('title', 'Editar Producto')
 
 @section('breadcrumb')
@@ -31,7 +32,6 @@
                     <div class="inside">
                         {!! Form::open(['url' => '/admin/products/'.$p->id.'/edit', 'files' => true]) !!}
                         <div class="row">
-
                             <div class="col-md-6">
                                 <label for="title"> Nombre del Producto:</label>
                                 <div class="input-group">
@@ -139,6 +139,7 @@
                             <div class="inside product_gallery">
                                 {!! Form::open(['url' => '/admin/products/'.$p->id.'/gallery/add', 'files' => true, 'id' => 'form_product_gallery']) !!}
                                 {!! Form::file('file_image', ['id' => 'product_file_image', 'accept' => 'image/*', 'style' => 'display: none;', 'required']) !!}
+                                {{-- {!! Form::hidden('company_id') !!} --}}
                                 {!! Form::close() !!}
 
                                 <div class="btn-submit">
@@ -161,5 +162,26 @@
                 </div>
             </div>
         </div>
+        {{-- <input id = "file" type="file" onchange="SavePhoto(this)" multiple> --}}
+        <input id = "file" type="file" class="inputdrag" multiple>
+
+        <hr>
+        <div id="drop" class="drop">
+            <label for="file">Drag and Drop o Click aqui </label>
+        </div>
+        <hr>
+        <progress min="0" max="100" value="0"></progress><span id="aca"></span>
+        <br><br>
+        <img id="image" src="" alt="">
+
+        <form id="form" action="" method="post" enctype="multipart/form-data">
+            <input type='text' id='company_id' name='company_id'/>
+            <input id="uploadImage" type="file" accept="image/*" name="image" />
+            <div id="preview"><img src="" /></div><br>
+        </form>
     </div>
+
+    <script src="{{ url('/static/js/draganddrop.js?='.time()) }}"></script>
 @endsection
+
+

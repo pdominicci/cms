@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function(){
     var product_file_image = document.getElementById('product_file_image')
     btn_product_file_image.addEventListener('click', function(){
         product_file_image.click()
+
     },false)
     product_file_image.addEventListener('change', function(){
         document.getElementById('form_product_gallery').submit()
@@ -16,6 +17,10 @@ $.ajaxSetup({
 });
 
 $(document).ready(function(){
+    var company_id = localStorage.getItem("company_id")
+    $('[name="company_id"]').val(company_id)
+    $('#company_id').val(company_id)
+
     //// combo anidado pais provincia
     $('#country').on('change',function(e) {
         var country_id = e.target.value;
@@ -26,7 +31,7 @@ $(document).ready(function(){
                 country_id: country_id
             },
             success:function(data){
-                $('#state').empty().append('<option selected>Seleccionar Provincia</option>');;
+                $('#state').empty().append('<option selected>Seleccionar Provincia</option>')
                 $('#city').empty().append('<option selected="selected">Seleccionar Ciudad</option>')
                 $('#company').empty().append('<option selected="selected">Seleccionar Empresa</option>')
 
@@ -72,23 +77,9 @@ $(document).ready(function(){
         })
     });
 
-    $('#email').on('change',function(e) {
-        var email = e.target.value;
-        console.log('aaaaaaaaaaa ' +email);
-        // $.ajax({
-        //     url:"/admin/company",
-        //     type:"POST",
-        //     data: {
-        //         city_id: city_id
-        //     },
-        //     success:function(data){
-        //         $('#company').empty().append('<option selected="selected">Seleccionar Empresa</option>')
-        //         $.each(data.companies,function(city,company){
-        //             $('#company').append('<option value="'+company.id+'">'+company.company+'</option>');
-        //         })
-        //     }
-        // })
-    });
+    // $('#email').on('change',function(e) {
+    //     var email = e.target.value;
+    // });
 
     editor_init('editor');
 

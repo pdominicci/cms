@@ -29,8 +29,10 @@
                 <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
             </div>
 
+            <div class="mt-4" id='divcompanies'>
+            </div>
+
             <div class="mt-4">
-                <x-jet-label for="usercompanies" value="{{__('Empresas')}}"/>
                 <select name="company_id" id="usercompanies">
                 </select>
             </div>
@@ -49,7 +51,7 @@
                     </a>
                 @endif
 
-                <x-jet-button class="ml-4">
+                <x-jet-button class="ml-4" id="btnlogin">
                     {{ __('Login') }}
                 </x-jet-button>
             </div>

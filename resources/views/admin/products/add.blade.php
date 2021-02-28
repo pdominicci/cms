@@ -29,7 +29,8 @@
             <div class="inside">
                 {!! Form::open(['url' => '/admin/products/add', 'files' => true]) !!}
                 <div class="row">
-
+                    {{-- levanto el company_id desde admin.js con localstorage y lo oculto en este form --}}
+                    <input type='hidden' id='company_id' name='company_id'/>
                     <div class="col-md-6">
                         <label for="title"> Nombre del Producto:</label>
                         <div class="input-group">

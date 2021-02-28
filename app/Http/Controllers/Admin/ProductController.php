@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Category, App\Models\Product, App\Models\PGallery;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\PGallery;
+use App\Models\Company;
 
 use Validator;
 use Illuminate\Support\Str;
@@ -30,11 +33,34 @@ class ProductController extends Controller
         $data = ['cats' => $cats];
         return view('admin.products.add', $data);
     }
+    public function upload(Request $request)
+    {
+        $img = $request->file('uploadImage')->getClientOriginalName();
+
+        if($img){
+            //renombrar time() + extension
+            $img = time().'.'.$request->file('uploadImage')->clientExtension();
+            $imgName = $img;
+
+            $c = Company::findOrFail($request->company_id);
+            $this->directory = public_path('products/'.$c->slug.'/');
+            if(!Storage::exists($this->directory)) {
+                //crea el directorio
+                Storage::makeDirectory($this->directory, 0775, true);
+            }
+            $request->file('uploadImage')->move($this->directory, $img);
+
+            // crear la miniatura con el mismo nombre que la imagen grande
+            $img = Image::make($this->directory.$img);
+            $img->fit(100,100,function($constraint){
+                $constraint->upsize();
+            });
+
+            $img->save($this->directory.'t_'.$imgName);
+        }
+    }
     private function uploadImage(Request $request)
     {
-        //si no enviaron imagen
-        $prdImage = 'noDisponible.jpg';
-
         //subir imagen si fue enviada
         //si enviaron archivo
         $img = $request->file('img');
@@ -45,10 +71,10 @@ class ProductController extends Controller
             //subir
             $c = Category::findOrFail($request->category);
 
-            $slug = Str::slug($c->name, '_');
+            $c = Company::findOrFail($request->company_id);
 
-            $this->directory = public_path('products/'.$slug.'/');
-            $this->relativeDirectory = 'products/'.$slug.'/';
+            $this->directory = public_path('products/'.$c->slug.'/');
+            $this->relativeDirectory = 'products/'.$c->slug.'/';
             if(!Storage::exists($this->directory)) {
                 //crea el directorio
                 Storage::makeDirectory($this->directory, 0775, true);
@@ -59,28 +85,19 @@ class ProductController extends Controller
 
         return $img;
     }
-    private function uploadImageGallery(Request $request, $id)
+    private function uploadImageGallery(Request $request, $nombreimagendestacada)
     {
-        //si no enviaron imagen
-        $prdImage = 'noDisponible.jpg';
-
         //subir imagen si fue enviada
         //si enviaron archivo
         $img = $request->file('file_image');
 
-        if( $request->file('file_image') ){
+        if($img){
             //renombrar time() + extension
-            $img = $id.'-'.time().'.'.$request->file('file_image')->clientExtension();
+            $img = $nombreimagendestacada.'-'.time().'.'.$request->file('file_image')->clientExtension();
             //subir
-
-            $p = Product::findOrFail($id);
-
-            $c = Category::findOrFail($p->category_id);
-
-            $slug = Str::slug($c->name, '_');
-
-            $this->directory = public_path('products/'.$slug.'/');
-            $this->relativeDirectory = 'products/'.$slug.'/';
+            $c = Company::findOrFail($request->company_id);
+            $this->directory = public_path('products/'.$c->slug.'/');
+            $this->relativeDirectory = 'products/'.$c->slug.'/';
             if(!Storage::exists($this->directory)) {
                 //crea el directorio
                 Storage::makeDirectory($this->directory, 0775, true);
@@ -107,11 +124,13 @@ class ProductController extends Controller
 
         $request->validate($rules, $messages);
         $p = new Product;
+        // levanto el company_id desde admin.js con localstorage y lo
+        // oculto en este add para despues levantarlo por aca
+        $p->company_id = $request->company_id;
         $p->status = '0';
         $p->name = e($request->input('name'));
         $p->slug = Str::slug($request->input('name'));
         $p->category_id = $request->input('category');
-        // $p->image = $filename;
         $p->price = $request->input('price');
         $p->in_discount = $request->input('indiscount');
         $p->discount = $request->input('discount');
@@ -120,7 +139,7 @@ class ProductController extends Controller
         $p->file_path = $this->relativeDirectory;
         $p->image = $imagen;
         if($p->save()){
-            // open file a image resource
+            // open file image resource
             $img = Image::make($this->directory.$p->image);
             $img->fit(100,100,function($constraint){
                 $constraint->upsize();
@@ -152,7 +171,7 @@ class ProductController extends Controller
         $request->validate($rules, $messages);
 
         $p = Product::findOrFail($id);
-
+        // el company_id no cambia
         $p->status = $request->input('status');
         $p->name = e($request->name);
         $p->slug = Str::slug($request->input('name'));
@@ -191,7 +210,11 @@ class ProductController extends Controller
         $request->validate($rules, $messages);
 
         $g = new PGallery;
-        $imagen = $this->uploadImageGallery($request, $id);
+
+        $p = Product::findOrFail($id);
+        // extraigo el nombre de la imagen para ponerles a todas las imagegallery el mismo nombre
+        $nombreimagendestacada = substr($p->image, -14, 10);
+        $imagen = $this->uploadImageGallery($request, $nombreimagendestacada);
         // dd($imagen);
         $g->product_id = $id;
         $g->file_path = $this->relativeDirectory;
