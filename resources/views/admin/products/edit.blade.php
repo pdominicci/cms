@@ -130,54 +130,55 @@
                         </h2>
                     </div>
                 </div>
-
                 <div class="panel shadow mtop16">
                     <div class="header">
                         <h2 class="title">
                             <i class="far fa-images"></i>
                             Galería
                             <div class="inside product_gallery">
-                                {!! Form::open(['url' => '/admin/products/'.$p->id.'/gallery/add', 'files' => true, 'id' => 'form_product_gallery']) !!}
-                                {!! Form::file('file_image', ['id' => 'product_file_image', 'accept' => 'image/*', 'style' => 'display: none;', 'required']) !!}
-                                {{-- {!! Form::hidden('company_id') !!} --}}
+                                {!! Form::open(['url' => '/admin/product'.$p->id.'/gallery/add', 'files' => true]) !!}
+                                <div class="custom-file">
+                                    {!! Form::file('file_image',['class' => 'custom-file-input', 'id' => 'product_file_image', 'accept' => 'image/*']) !!}
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                </div>
                                 {!! Form::close() !!}
-
                                 <div class="btn-submit">
                                     <a href="#" id="btn_product_file_image"><i class="fas fa-plus"></i></a>
-                                </div>
-
-                                <div class="thumbs">
-                                    @foreach ($p->getGallery as $img)
-                                        <div class="thumb">
-                                            <a href="#">
-                                                <i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top" title="Eliminar Producto"></i>
-                                            </a>
-                                        </div>
-                                        <img src="../../../{{$img->file_path.'/t_'.$img->file_name}}">
-                                    @endforeach
                                 </div>
                             </div>
                         </h2>
                     </div>
                 </div>
+
             </div>
         </div>
-        {{-- <input id = "file" type="file" onchange="SavePhoto(this)" multiple> --}}
+
         <input id = "file" type="file" class="inputdrag" multiple>
 
         <hr>
         <div id="drop" class="drop">
-            <label for="file">Drag and Drop o Click aqui </label>
+            <i class="fas fa-camera"></i>
+            <label for="file">Arrastre las fotos o clickee aquí </label>
         </div>
-        <hr>
-        <progress min="0" max="100" value="0"></progress><span id="aca"></span>
-        <br><br>
-        <img id="image" src="" alt="">
 
         <form id="form" action="" method="post" enctype="multipart/form-data">
-            <input type='text' id='company_id' name='company_id'/>
+            <input type='hidden' id='product_id' name='product_id' value="{{ $p->id }}"/>
+            <input type='hidden' id='company_id' name='company_id'/>
+            <input type='hidden' id='sub_id' name='sub_id'/>
             <input id="uploadImage" type="file" accept="image/*" name="image" />
-            <div id="preview"><img src="" /></div><br>
+            <input id="uploadImageMiniature" type="file" accept="image/*" name="image" />
+            <div class="productos">
+                @foreach ($p->getGallery as $img)
+                    <article>
+                        <img src="../../../{{$img->file_path.'/t_'.$img->file_name}}">
+                        <i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top" title="Eliminar Producto"></i>
+                    </article>
+                @endforeach
+            </div>
+            <div id="gallery" class="productos">
+                <article>
+                </article>
+            </div>
         </form>
     </div>
 

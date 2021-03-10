@@ -35,29 +35,48 @@ class ProductController extends Controller
     }
     public function upload(Request $request)
     {
+        $id = $request->product_id;
         $img = $request->file('uploadImage')->getClientOriginalName();
 
         if($img){
-            //renombrar time() + extension
-            $img = time().'.'.$request->file('uploadImage')->clientExtension();
+            $p = Product::findOrFail($id);
+            // extraigo el nombre de la imagen para ponerles a todas las imagegallery el mismo nombre
+            $nombreimagendestacada = substr($p->image, -14, 10);
+
+            $img = $id.'-'.$request->sub_id . '-' .$nombreimagendestacada.'.'.$request->file('uploadImage')->clientExtension();
             $imgName = $img;
 
+            $g = new PGallery;
+            $g->product_id = $id;
             $c = Company::findOrFail($request->company_id);
             $this->directory = public_path('products/'.$c->slug.'/');
+            $this->relativeDirectory = 'products/'.$c->slug.'/';
+            $g->file_path = $this->relativeDirectory;
+            $g->file_name = $imgName;
+            $g->save();
+
             if(!Storage::exists($this->directory)) {
                 //crea el directorio
                 Storage::makeDirectory($this->directory, 0775, true);
             }
             $request->file('uploadImage')->move($this->directory, $img);
-
             // crear la miniatura con el mismo nombre que la imagen grande
-            $img = Image::make($this->directory.$img);
-            $img->fit(100,100,function($constraint){
+            $imgMin = $request->file('uploadImageMiniature')->getClientOriginalName();
+            $imgMin = Image::make($this->directory.$img);
+            $imgMin->fit(100,100,function($constraint){
                 $constraint->upsize();
             });
 
-            $img->save($this->directory.'t_'.$imgName);
+            $imgMin->save($this->directory.'t_'.$imgName);
         }
+        $data = [
+                    'file_name' => 't_'.$imgName,
+                    'file_path' => $g->file_path
+                ];
+        return $data;
+    }
+    public function progress(){
+        var_dump('aca');
     }
     private function uploadImage(Request $request)
     {
