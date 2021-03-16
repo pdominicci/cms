@@ -6,28 +6,50 @@ $(document).ready(function(){
     $("drop").removeClass("droping")
     $("drop").addClass("drop")
 
+    // puse dos veces este codigo del click del eliminar foto porque
+    // si lo declaraba una solamente aca cuando hacia el upload de la foto
+    // no me tomaba el evento y si lo declaraba solamente arriba no me tomaba
+    // el evento onclick para las fotos que ya estaban cargadas
+    $('.eliminar_foto').on('click',function(e) {
+        var hijo = $(this).children('input')[0]
+        var id = hijo['value']
+        $('#'+id).remove()
+        $.ajax({
+            url:"/admin/deletePhoto",
+            type:"POST",
+            data: {
+                id: id
+            },
+            success:function(){
+
+            }
+        })
+    })
 })
 
-let drop = document.getElementById('drop')
 
+let drop = document.getElementById('drop')
+let counter = 0
 drop.addEventListener('dragenter', e =>{
     e.preventDefault()
-    console.log('estoy adentro del drop')
+    counter++
+    drop.classList.remove('drop');
+    drop.classList.add('droping');
 })
 
 drop.addEventListener('dragleave', e =>{
     e.preventDefault()
-    console.log('estoy afuera del drop')
-    drop.classList.remove('droping');
-    drop.classList.add('drop');
+    counter--
+    if (counter == 0) {
+        drop.classList.remove('droping');
+        drop.classList.add('drop');
+    }
 })
 
 drop.addEventListener('dragover', e =>{
     e.preventDefault()
-    console.log('estoy encima del drop')
     drop.classList.remove('drop');
     drop.classList.add('droping');
-
 })
 
 drop.addEventListener('drop', e =>{
@@ -44,10 +66,8 @@ drop.addEventListener('drop', e =>{
 })
 
 function upload(archivo,sub_id){
-
     var company_id = localStorage.getItem("company_id")
     var product_id = $('#product_id').val()
-
     var formData = new FormData()
     formData.append("product_id", product_id)
     formData.append("company_id", company_id)
@@ -58,7 +78,7 @@ function upload(archivo,sub_id){
     $.ajax({
         url:"/admin/upload",
         type: "POST",
-        data:  formData,
+        data: formData,
         contentType: false,
         cache: false,
         processData:false,
@@ -70,44 +90,31 @@ function upload(archivo,sub_id){
                 if (key == 'file_name'){
                     file_name = value
                 }
+                if (key == 'id'){
+                    id = value
+                }
             })
 
-            complete_file = '../../../'+file_path+file_name
-            $('#gallery').append('<article><img src="'+complete_file+'"></img><i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top" title="Eliminar Producto"></i></article>')
+            complete_file = window.location.origin + '/' + file_path+file_name
+            $('#gallery').append('<article id="'+id+'"><img src="'+complete_file+'"></img><a class="eliminar_foto"><input type="hidden" value="'+id+'"><i class="far fa-trash-alt"></i></a></article>')
+
+            $('.eliminar_foto').on('click',function(e) {
+                var hijo = $(this).children('input')[0]
+                var id = hijo['value']
+                $('#'+id).remove()
+                console.log('aca ' + id)
+
+                var formData = new FormData()
+                formData.append("id", id)
+                $.ajax({
+                    url:"/admin/deletePhoto",
+                    type:"POST",
+                    data: formData,
+                    success:function(){
+
+                    }
+                })
+            })
         }
     })
 }
-
-// let progress = document.querySelector('progress')
-// let span = document.querySelector('span')
-// let img = document.querySelector('img')
-// progress.value = 0
-// span.innerHTML = '0 %'
-
-// let xhr = new XMLHttpRequest
-
-// // para que cada vez que se ejecute sea diferente
-// let urlSinCache = complete_file
-
-// xhr.open('get', urlSinCache)
-// xhr.responseType = 'blob'
-// xhr.addEventListener('load', () => {
-//     if (xhr.status == 200){
-//         let imgBlob = xhr.response
-//         let url = URL.createObjectURL(imgBlob)
-//         console.log("200")
-//         img.src = url
-//     }else {
-//         console.log("400")
-//     }
-// })
-
-// xhr.addEventListener('progress', e => {
-//     if (e.lengthComputable) {
-//         console.log("aca")
-//         let porcentaje = parseInt((e.loaded * 100) / e.total)
-//         $('#progressspan').append("<div >"+porcentaje + " %</div>")
-//         //span.innerHTML = porcentaje + '%'
-//     }
-// })
-// xhr.send()

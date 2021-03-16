@@ -14,6 +14,8 @@ use Validator;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
+
 class ProductController extends Controller
 {
     private $directory;
@@ -40,43 +42,68 @@ class ProductController extends Controller
 
         if($img){
             $p = Product::findOrFail($id);
+
+            $g_ultimo_id = PGallery::where('product_id', $id)
+               ->orderByDesc('id')
+               ->first();
+
+            if ($g_ultimo_id){
+                $ultimo_id = $g_ultimo_id->id + 1;
+            }else{
+                $ultimo_id = 1;
+            }
+
             // extraigo el nombre de la imagen para ponerles a todas las imagegallery el mismo nombre
             $nombreimagendestacada = substr($p->image, -14, 10);
 
-            $img = $id.'-'.$request->sub_id . '-' .$nombreimagendestacada.'.'.$request->file('uploadImage')->clientExtension();
+            $img = $id.'-'.$ultimo_id . '-' .$request->sub_id.'-'.$nombreimagendestacada.'.'.$request->file('uploadImage')->clientExtension();
             $imgName = $img;
 
             $g = new PGallery;
             $g->product_id = $id;
+            $g->cover_image = 'N';
             $c = Company::findOrFail($request->company_id);
-            $this->directory = public_path('products/'.$c->slug.'/');
             $this->relativeDirectory = 'products/'.$c->slug.'/';
+
             $g->file_path = $this->relativeDirectory;
             $g->file_name = $imgName;
-            $g->save();
 
-            if(!Storage::exists($this->directory)) {
+            $g->save();
+            if(!Storage::exists($this->relativeDirectory)) {
                 //crea el directorio
-                Storage::makeDirectory($this->directory, 0775, true);
+                Storage::makeDirectory($this->relativeDirectory, 0775, true);
             }
-            $request->file('uploadImage')->move($this->directory, $img);
-            // crear la miniatura con el mismo nombre que la imagen grande
-            $imgMin = $request->file('uploadImageMiniature')->getClientOriginalName();
-            $imgMin = Image::make($this->directory.$img);
+
+            //http://mycms.com/storage/products/elplacarddemarita/rana3.jpg
+            if (Storage::disk('local')->put($this->relativeDirectory.$imgName, file_get_contents($request->file('uploadImage')))){
+                $path =  $this->relativeDirectory.$imgName;
+            }
+
+            // //$request->file('uploadImage')->move($this->relativeDirectory, $img);
+            // // crear la miniatura con el mismo nombre que la imagen grande
+            $imgMin = $request->file('uploadImageMiniature');
+            $imgMin = Image::make($imgMin);
             $imgMin->fit(100,100,function($constraint){
-                $constraint->upsize();
+                 $constraint->upsize();
             });
 
-            $imgMin->save($this->directory.'t_'.$imgName);
+            $imgMin->save($this->relativeDirectory.'t_'.$imgName);
         }
         $data = [
                     'file_name' => 't_'.$imgName,
-                    'file_path' => $g->file_path
+                    'file_path' => $g->file_path,
+                    'id' => $ultimo_id,
                 ];
         return $data;
     }
     public function progress(){
-        var_dump('aca');
+        //var_dump('aca');
+    }
+    public function deletePhoto(Request $request){
+
+        $g = PGallery::findOrFail($request->id);
+        $d = PGallery::where('id',$request->id)->delete();
+        Storage::disk('local')->delete($g->file_path.$g->file_name);
     }
     private function uploadImage(Request $request)
     {
@@ -87,9 +114,8 @@ class ProductController extends Controller
         if( $request->file('img') ){
             //renombrar time() + extension
             $img = time().'.'.$request->file('img')->clientExtension();
-            //subir
-            $c = Category::findOrFail($request->category);
 
+            //subir
             $c = Company::findOrFail($request->company_id);
 
             $this->directory = public_path('products/'.$c->slug.'/');

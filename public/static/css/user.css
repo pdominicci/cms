@@ -1,5 +1,5 @@
 article {
-    width:8.66%;
+    width:6.66%;
     margin:1%;
     padding: 5px;
     box-sizing:border-box;
@@ -15,9 +15,9 @@ article img {
 .productos {
     display:flex;
     flex-wrap:wrap;
-    max-width:1200px;
+    max-width:1000px;
     margin:auto;
-    background:#ddd;
+    background:#fff;
 }
 .productos article h3 {
     position:absolute;
