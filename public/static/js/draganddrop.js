@@ -1,6 +1,6 @@
 $(document).ready(function(){
-    $("#uploadImage").css("display", "none");
-    $("#uploadImageMiniature").css("display", "none");
+    $("#uploadImage").css("display", "none")
+    $("#uploadImageMiniature").css("display", "none")
     let progress = $('#progressbar')
     let span = $('#progressspan')
     $("drop").removeClass("droping")
@@ -13,17 +13,24 @@ $(document).ready(function(){
     $('.eliminar_foto').on('click',function(e) {
         var hijo = $(this).children('input')[0]
         var id = hijo['value']
-        $('#'+id).remove()
-        $.ajax({
-            url:"/admin/deletePhoto",
-            type:"POST",
-            data: {
-                id: id
-            },
-            success:function(){
+        console.log("11111")
+        if ($('#'+id).lenght!==0){
+            $('#'+id).remove()
 
-            }
-        })
+            var formData = new FormData()
+            formData.append("id", id)
+            console.log("esto es id "+id)
+            $.ajax({
+                url:"/admin/deletePhoto",
+                type:"POST",
+                data: formData,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,   // tell jQuery not to set contentType
+                success:function(){
+
+                }
+            })
+        }
     })
 })
 
@@ -101,20 +108,24 @@ function upload(archivo,sub_id){
             $('.eliminar_foto').on('click',function(e) {
                 var hijo = $(this).children('input')[0]
                 var id = hijo['value']
-                $('#'+id).remove()
-                console.log('aca ' + id)
+                console.log("11111")
+                if ($('#'+id).lenght!==0){
+                    $('#'+id).remove()
 
-                var formData = new FormData()
-                formData.append("id", id)
-                $.ajax({
-                    url:"/admin/deletePhoto",
-                    type:"POST",
-                    data: formData,
-                    success:function(){
+                    var formData = new FormData()
+                    formData.append("id", id)
+                    console.log("esto es id "+id)
+                    $.ajax({
+                        url:"/admin/deletePhoto",
+                        type:"POST",
+                        data: formData,
+                        processData: false,  // tell jQuery not to process the data
+                        contentType: false,   // tell jQuery not to set contentType
+                        success:function(){
 
-                    }
-                })
-            })
-        }
+                        }
+                    })
+                }
+            })        }
     })
 }

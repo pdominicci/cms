@@ -14,7 +14,8 @@ use Validator;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\File;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -41,23 +42,14 @@ class ProductController extends Controller
         $img = $request->file('uploadImage')->getClientOriginalName();
 
         if($img){
+
             $p = Product::findOrFail($id);
 
-            $g_ultimo_id = PGallery::where('product_id', $id)
-               ->orderByDesc('id')
-               ->first();
-
-            if ($g_ultimo_id){
-                $ultimo_id = $g_ultimo_id->id + 1;
-            }else{
-                $ultimo_id = 1;
-            }
 
             // extraigo el nombre de la imagen para ponerles a todas las imagegallery el mismo nombre
             $nombreimagendestacada = substr($p->image, -14, 10);
 
-            $img = $id.'-'.$ultimo_id . '-' .$request->sub_id.'-'.$nombreimagendestacada.'.'.$request->file('uploadImage')->clientExtension();
-            $imgName = $img;
+            $imgName = $id.'-'.time() . '-' .$request->sub_id.'-'.$nombreimagendestacada.'.'.$request->file('uploadImage')->clientExtension();
 
             $g = new PGallery;
             $g->product_id = $id;
@@ -69,15 +61,22 @@ class ProductController extends Controller
             $g->file_name = $imgName;
 
             $g->save();
+
+            // $ultimo_id = $g->id();
+            $ultimo_id = DB::getPdo()->lastInsertId();
+
             if(!Storage::exists($this->relativeDirectory)) {
                 //crea el directorio
                 Storage::makeDirectory($this->relativeDirectory, 0775, true);
             }
 
             //http://mycms.com/storage/products/elplacarddemarita/rana3.jpg
-            if (Storage::disk('local')->put($this->relativeDirectory.$imgName, file_get_contents($request->file('uploadImage')))){
-                $path =  $this->relativeDirectory.$imgName;
-            }
+            // if (Storage::disk('local')->put($this->relativeDirectory.$imgName, file_get_contents($request->file('uploadImage')))){
+            //     $path =  $this->relativeDirectory.$imgName;
+            // }
+            $img = $request->file('uploadImage');
+            $img = Image::make($img);
+            $img->save($this->relativeDirectory.$imgName);
 
             // //$request->file('uploadImage')->move($this->relativeDirectory, $img);
             // // crear la miniatura con el mismo nombre que la imagen grande
@@ -89,6 +88,13 @@ class ProductController extends Controller
 
             $imgMin->save($this->relativeDirectory.'t_'.$imgName);
         }
+
+        // $p = Product::findOrFail($id);
+
+        // $g_ultimo_id = PGallery::where('product_id', $id)
+        //    ->orderByDesc('id')
+        //    ->first();
+
         $data = [
                     'file_name' => 't_'.$imgName,
                     'file_path' => $g->file_path,
@@ -100,10 +106,12 @@ class ProductController extends Controller
         //var_dump('aca');
     }
     public function deletePhoto(Request $request){
-
+        var_dump('aca '. $request->id);
         $g = PGallery::findOrFail($request->id);
         $d = PGallery::where('id',$request->id)->delete();
-        Storage::disk('local')->delete($g->file_path.$g->file_name);
+        // Storage::disk('local')->delete($g->file_path.$g->file_name);
+        File::delete($g->file_path.$g->file_name);
+        File::delete($g->file_path.'t_'.$g->file_name);
     }
     private function uploadImage(Request $request)
     {
