@@ -96,13 +96,10 @@
                         <input id = "file1" type="file" class="inputdrag" multiple>
 
                         <hr>
-                        <div id="drop" class="drop row">
-                            <i class="fas fa-camera"></i>
-                            <label for="file1" class="col-md-3">Arrastre las fotos aquí </label>
-                            <div class="openarticle col-md-3">
-                                <input id="open_file" type="file" multiple style="display:none">
-                                <label for="open_file" class="open far fa-folder-open"></label>
-                            </div>
+                        <div id="drop" class="row">
+                            <input id="open_file" type="file" multiple style="display:none">
+                            <label id="open_label" for="open_file" class="open col-md-6">Elija las fotos</label>
+                            <label for="file1" class=" open col-md-6">Arrastre las fotos aquí </label>
                         </div>
 
                         <input type='hidden' id='product_id' name='product_id' value="{{ $p->id }}"/>
@@ -112,8 +109,6 @@
                         <input id="uploadImage" type="file" accept="image/*" name="image" />
                         <input id="uploadImageMiniature" type="file" accept="image/*" name="image" />
                         <div class="productos" id="gallery">
-
-
                             @foreach ($p->getGallery as $img)
                                 <article id="{{$img->id}}">
                                     @if ($img->cover_image == 'S')

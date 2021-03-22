@@ -4,7 +4,7 @@ $(document).ready(function(){
     let progress = $('#progressbar')
     let span = $('#progressspan')
     $("drop").removeClass("droping")
-    $("drop").addClass("drop")
+    $("drop").addClass("open")
 
     // puse dos veces este codigo del click del eliminar foto porque
     // si lo declaraba una solamente aca cuando hacia el upload de la foto
@@ -39,7 +39,8 @@ let counter = 0
 drop.addEventListener('dragenter', e =>{
     e.preventDefault()
     counter++
-    drop.classList.remove('drop');
+    drop.classList.remove('open');
+    $('#open_label').hide()
     drop.classList.add('droping');
 })
 
@@ -48,13 +49,13 @@ drop.addEventListener('dragleave', e =>{
     counter--
     if (counter == 0) {
         drop.classList.remove('droping');
-        drop.classList.add('drop');
+        drop.classList.add('open');
     }
 })
 
 drop.addEventListener('dragover', e =>{
     e.preventDefault()
-    drop.classList.remove('drop');
+    drop.classList.remove('open');
     drop.classList.add('droping');
 })
 
@@ -62,7 +63,8 @@ drop.addEventListener('drop', e =>{
     e.preventDefault()
 
     drop.classList.remove('droping');
-    drop.classList.add('drop');
+    //drop.classList.add('open');
+    $('#open_label').show()
     let archivos = Array.from(e.dataTransfer.files)
     let sub_id = 0
     archivos.forEach(archivo =>{
