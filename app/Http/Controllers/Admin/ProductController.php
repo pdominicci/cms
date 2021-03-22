@@ -42,9 +42,7 @@ class ProductController extends Controller
         $img = $request->file('uploadImage')->getClientOriginalName();
 
         if($img){
-
             $p = Product::findOrFail($id);
-
 
             // extraigo el nombre de la imagen para ponerles a todas las imagegallery el mismo nombre
             $nombreimagendestacada = substr($p->image, -14, 10);
@@ -70,7 +68,6 @@ class ProductController extends Controller
                 Storage::makeDirectory($this->relativeDirectory, 0775, true);
             }
 
-            //http://mycms.com/storage/products/elplacarddemarita/rana3.jpg
             // if (Storage::disk('local')->put($this->relativeDirectory.$imgName, file_get_contents($request->file('uploadImage')))){
             //     $path =  $this->relativeDirectory.$imgName;
             // }
@@ -78,7 +75,6 @@ class ProductController extends Controller
             $img = Image::make($img);
             $img->save($this->relativeDirectory.$imgName);
 
-            // //$request->file('uploadImage')->move($this->relativeDirectory, $img);
             // // crear la miniatura con el mismo nombre que la imagen grande
             $imgMin = $request->file('uploadImageMiniature');
             $imgMin = Image::make($imgMin);
@@ -88,12 +84,6 @@ class ProductController extends Controller
 
             $imgMin->save($this->relativeDirectory.'t_'.$imgName);
         }
-
-        // $p = Product::findOrFail($id);
-
-        // $g_ultimo_id = PGallery::where('product_id', $id)
-        //    ->orderByDesc('id')
-        //    ->first();
 
         $data = [
                     'file_name' => 't_'.$imgName,
@@ -106,7 +96,6 @@ class ProductController extends Controller
         //var_dump('aca');
     }
     public function deletePhoto(Request $request){
-        var_dump('aca '. $request->id);
         $g = PGallery::findOrFail($request->id);
         $d = PGallery::where('id',$request->id)->delete();
         // Storage::disk('local')->delete($g->file_path.$g->file_name);

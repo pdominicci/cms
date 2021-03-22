@@ -13,13 +13,11 @@ $(document).ready(function(){
     $('.eliminar_foto').on('click',function(e) {
         var hijo = $(this).children('input')[0]
         var id = hijo['value']
-        console.log("11111")
         if ($('#'+id).lenght!==0){
             $('#'+id).remove()
 
             var formData = new FormData()
             formData.append("id", id)
-            console.log("esto es id "+id)
             $.ajax({
                 url:"/admin/deletePhoto",
                 type:"POST",
@@ -36,6 +34,7 @@ $(document).ready(function(){
 
 
 let drop = document.getElementById('drop')
+let open_file = document.getElementById('open_file')
 let counter = 0
 drop.addEventListener('dragenter', e =>{
     e.preventDefault()
@@ -65,6 +64,22 @@ drop.addEventListener('drop', e =>{
     drop.classList.remove('droping');
     drop.classList.add('drop');
     let archivos = Array.from(e.dataTransfer.files)
+    let sub_id = 0
+    archivos.forEach(archivo =>{
+        sub_id++
+        upload(archivo, sub_id)
+    })
+})
+
+open_file.addEventListener('change', e =>{
+    e.preventDefault()
+
+    var archivos = new Array()
+
+    for (var i = 0; i < open_file.files.length; ++i) {
+        archivos.push(open_file.files.item(i));
+
+    }
     let sub_id = 0
     archivos.forEach(archivo =>{
         sub_id++
@@ -108,13 +123,11 @@ function upload(archivo,sub_id){
             $('.eliminar_foto').on('click',function(e) {
                 var hijo = $(this).children('input')[0]
                 var id = hijo['value']
-                console.log("11111")
                 if ($('#'+id).lenght!==0){
                     $('#'+id).remove()
 
                     var formData = new FormData()
                     formData.append("id", id)
-                    console.log("esto es id "+id)
                     $.ajax({
                         url:"/admin/deletePhoto",
                         type:"POST",
@@ -126,6 +139,7 @@ function upload(archivo,sub_id){
                         }
                     })
                 }
-            })        }
+            })
+        }
     })
 }
