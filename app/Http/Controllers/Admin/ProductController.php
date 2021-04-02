@@ -51,7 +51,15 @@ class ProductController extends Controller
 
             $g = new PGallery;
             $g->product_id = $id;
+
+            //$cant_cover_image = $this->cant_cover_image($id);
+            // si no hay ninguno con imagen de portada le pongo al primero imagen de portada en 'S'
+            //if ($cant_cover_image > 0){
             $g->cover_image = 'N';
+            // } else {
+            //     $g->cover_image = 'S';
+            // }
+
             $c = Company::findOrFail($request->company_id);
             $this->relativeDirectory = 'products/'.$c->slug.'/';
 
@@ -89,8 +97,15 @@ class ProductController extends Controller
                     'file_name' => 't_'.$imgName,
                     'file_path' => $g->file_path,
                     'id' => $ultimo_id,
+                    'cover' => $g->cover_image,
                 ];
         return $data;
+    }
+    private function cant_cover_image($id){
+        $cant_cover_image = PGallery::where('product_id', $id)
+                                    ->where('cover_image','S')
+                                    ->count();
+        return $cant_cover_image;
     }
     public function progress(){
         //var_dump('aca');
@@ -101,6 +116,33 @@ class ProductController extends Controller
         // Storage::disk('local')->delete($g->file_path.$g->file_name);
         File::delete($g->file_path.$g->file_name);
         File::delete($g->file_path.'t_'.$g->file_name);
+    }
+    public function setCoverImage(Request $request){
+        $id = $request->id;
+        $g = PGallery::findOrFail($id);
+
+        $this->unset_cover_image($g->product_id);
+
+        $g->cover_image = 'S';
+        $g->save();
+
+        //$data = ['id' => $id];
+    }
+    private function unset_cover_image($product_id){
+        $galleries = PGallery::where('product_id', $product_id)
+                        ->where('cover_image','S')
+                        ->get();
+
+        $id_cover_image = 0;
+        foreach($galleries as $g){
+            $id_cover_image = $g->id;
+        }
+
+        if($id_cover_image){
+            $g_cover = PGallery::findOrFail($id_cover_image);
+            $g_cover->cover_image = 'N';
+            $g_cover->save();
+        }
     }
     private function uploadImage(Request $request)
     {

@@ -67,5 +67,6 @@ Route::prefix('/admin')->group(function(){
     Route::post('/upload', [ProductController::class, 'upload']);
     Route::post('/progress', [ProductController::class, 'progress']);
     Route::post('/deletePhoto', [ProductController::class, 'deletePhoto']);
+    Route::post('/setCoverImage', [ProductController::class, 'setCoverImage']);
 });
 

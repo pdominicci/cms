@@ -1,5 +1,5 @@
 article {
-    width:4.66%;
+    width:15.66%;
     margin:1%;
     padding: 5px;
     box-sizing:border-box;
@@ -11,6 +11,13 @@ article img {
     max-width: 100%;
     height:auto;
     display:block;
+    text-align:center;
+}
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5px;
 }
 .productos {
     display:flex;

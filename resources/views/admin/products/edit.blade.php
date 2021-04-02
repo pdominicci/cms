@@ -96,10 +96,10 @@
                         <input id = "file1" type="file" class="inputdrag" multiple>
 
                         <hr>
-                        <div id="drop" class="row">
-                            <input id="open_file" type="file" multiple style="display:none">
-                            <label id="open_label" for="open_file" class="open col-md-6">Elija las fotos</label>
-                            <label for="file1" class=" open col-md-6">Arrastre las fotos aquí </label>
+                        <div id="drop" class="row d-flex justify-content-center">
+                            <input id="open_file" type="file" multiple class="ocultar">
+                            <label id="open_label" for="open_file" class="open col-md-6"><i class="fas fa-images"></i><span class="mleft">Elija o Arrastre las fotos aquí</span></label>
+                            <label for="file1" class="ocultar"></label>
                         </div>
 
                         <input type='hidden' id='product_id' name='product_id' value="{{ $p->id }}"/>
@@ -108,15 +108,29 @@
                         <input type='hidden' id='id' name='id'/>
                         <input id="uploadImage" type="file" accept="image/*" name="image" />
                         <input id="uploadImageMiniature" type="file" accept="image/*" name="image" />
+
                         <div class="productos" id="gallery">
                             @foreach ($p->getGallery as $img)
                                 <article id="{{$img->id}}">
-                                    @if ($img->cover_image == 'S')
-                                        <img src="{{url($img->file_path.'t_'.$img->file_name)}}" data-toggle="tooltip" data-placement="top" title="Portada">
-                                    @else
-                                        <img src="{{url($img->file_path.'t_'.$img->file_name)}}" >
-                                    @endif
-                                    <a class="eliminar_foto"><input type="hidden" value="{{$img->id}}"><i class="far fa-trash-alt"></i></a>
+                                    <img src="{{url($img->file_path.'t_'.$img->file_name)}}">
+                                    <div class="row">
+                                        <div class="col-md-6 d-flex justify-content-center">
+                                            <a class="eliminar_foto" data-toggle="tooltip" data-placement="top" title="Eliminar Foto">
+                                                <input type="hidden" value="{{$img->id}}">
+                                                <i class="far fa-trash-alt"></i>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-6 d-flex justify-content-center">
+                                            <a class="cover" data-toggle="tooltip" data-placement="top" title="Foto de Portada">
+                                                <input id="input_{{$img->id}}" type="hidden" value="{{$img->id}}">
+                                                @if ($img->cover_image == 'S')
+                                                    <i id="star" name="{{$img->id}}" class="base fas fa-star"></i>
+                                                @else
+                                                    <i id="star" name="{{$img->id}}" class="base far fa-star"></i>
+                                                @endif
+                                            </a>
+                                        </div>
+                                    </div>
                                 </article>
                             @endforeach
                         </div>
