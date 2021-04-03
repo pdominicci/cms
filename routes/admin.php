@@ -24,7 +24,7 @@ Route::prefix('/admin')->group(function(){
     Route::post('/products/add', [ProductController::class,'postProductAdd']);
     Route::get('/product/{idMarca}/edit',[ProductController::class,'getProductEdit']);
     Route::post('/products/{id}/edit', [ProductController::class,'postProductEdit']);
-    Route::post('/products/{id}/gallery/add', [ProductController::class, 'postProductGalleryAdd']);
+    //Route::post('/products/{id}/gallery/add', [ProductController::class, 'postProductGalleryAdd']);
 
     //Module Categories
     Route::get('/categories/{module}', [CategoryController::class,'getHome']);

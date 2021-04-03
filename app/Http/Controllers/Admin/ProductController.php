@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    private $directory;
     private $relativeDirectory;
 
     public function __construct(){
@@ -51,14 +50,7 @@ class ProductController extends Controller
 
             $g = new PGallery;
             $g->product_id = $id;
-
-            //$cant_cover_image = $this->cant_cover_image($id);
-            // si no hay ninguno con imagen de portada le pongo al primero imagen de portada en 'S'
-            //if ($cant_cover_image > 0){
             $g->cover_image = 'N';
-            // } else {
-            //     $g->cover_image = 'S';
-            // }
 
             $c = Company::findOrFail($request->company_id);
             $this->relativeDirectory = 'products/'.$c->slug.'/';
@@ -68,7 +60,6 @@ class ProductController extends Controller
 
             $g->save();
 
-            // $ultimo_id = $g->id();
             $ultimo_id = DB::getPdo()->lastInsertId();
 
             if(!Storage::exists($this->relativeDirectory)) {
@@ -76,14 +67,11 @@ class ProductController extends Controller
                 Storage::makeDirectory($this->relativeDirectory, 0775, true);
             }
 
-            // if (Storage::disk('local')->put($this->relativeDirectory.$imgName, file_get_contents($request->file('uploadImage')))){
-            //     $path =  $this->relativeDirectory.$imgName;
-            // }
             $img = $request->file('uploadImage');
             $img = Image::make($img);
             $img->save($this->relativeDirectory.$imgName);
 
-            // // crear la miniatura con el mismo nombre que la imagen grande
+            // crear la miniatura con el mismo nombre que la imagen grande
             $imgMin = $request->file('uploadImageMiniature');
             $imgMin = Image::make($imgMin);
             $imgMin->fit(100,100,function($constraint){
@@ -101,15 +89,6 @@ class ProductController extends Controller
                 ];
         return $data;
     }
-    private function cant_cover_image($id){
-        $cant_cover_image = PGallery::where('product_id', $id)
-                                    ->where('cover_image','S')
-                                    ->count();
-        return $cant_cover_image;
-    }
-    public function progress(){
-        //var_dump('aca');
-    }
     public function deletePhoto(Request $request){
         $g = PGallery::findOrFail($request->id);
         $d = PGallery::where('id',$request->id)->delete();
@@ -125,8 +104,6 @@ class ProductController extends Controller
 
         $g->cover_image = 'S';
         $g->save();
-
-        //$data = ['id' => $id];
     }
     private function unset_cover_image($product_id){
         $galleries = PGallery::where('product_id', $product_id)
@@ -143,54 +120,6 @@ class ProductController extends Controller
             $g_cover->cover_image = 'N';
             $g_cover->save();
         }
-    }
-    private function uploadImage(Request $request)
-    {
-        //subir imagen si fue enviada
-        //si enviaron archivo
-        $img = $request->file('img');
-
-        if( $request->file('img') ){
-            //renombrar time() + extension
-            $img = time().'.'.$request->file('img')->clientExtension();
-
-            //subir
-            $c = Company::findOrFail($request->company_id);
-
-            $this->directory = public_path('products/'.$c->slug.'/');
-            $this->relativeDirectory = 'products/'.$c->slug.'/';
-            if(!Storage::exists($this->directory)) {
-                //crea el directorio
-                Storage::makeDirectory($this->directory, 0775, true);
-            }
-
-            $request->file('img')->move($this->directory, $img);
-        }
-
-        return $img;
-    }
-    private function uploadImageGallery(Request $request, $nombreimagendestacada)
-    {
-        //subir imagen si fue enviada
-        //si enviaron archivo
-        $img = $request->file('file_image');
-
-        if($img){
-            //renombrar time() + extension
-            $img = $nombreimagendestacada.'-'.time().'.'.$request->file('file_image')->clientExtension();
-            //subir
-            $c = Company::findOrFail($request->company_id);
-            $this->directory = public_path('products/'.$c->slug.'/');
-            $this->relativeDirectory = 'products/'.$c->slug.'/';
-            if(!Storage::exists($this->directory)) {
-                //crea el directorio
-                Storage::makeDirectory($this->directory, 0775, true);
-            }
-
-            $request->file('file_image')->move($this->directory, $img);
-        }
-
-        return $img;
     }
     public function postProductAdd(Request $request){
         $rules = [
@@ -219,18 +148,7 @@ class ProductController extends Controller
         $p->in_discount = $request->input('indiscount');
         $p->discount = $request->input('discount');
         $p->contenido = e($request->input('content'));
-        $imagen = $this->uploadImage($request);
-        $p->file_path = $this->relativeDirectory;
-        $p->image = $imagen;
-        if($p->save()){
-            // open file image resource
-            $img = Image::make($this->directory.$p->image);
-            $img->fit(100,100,function($constraint){
-                $constraint->upsize();
-            });
-
-            $img->save($this->directory.'t_'.$p->image);
-        }
+        $p->save();
 
         return redirect('admin/products')->with('message','El producto ' . $p->name . ' se ha guardado exitosamente.')->with('typealert', 'success');
     }
@@ -264,56 +182,7 @@ class ProductController extends Controller
         $p->in_discount = $request->input('indiscount');
         $p->discount = $request->input('discount');
         $p->contenido = e($request->input('content'));
-        if($request->hasFile('img')){
-            $imagen = $this->uploadImage($request);
-            $p->image = $imagen;
-        }
-        if($p->save()){
-            // open file a image resource
-            if($request->hasFile('img')){
-                $img = Image::make($p->file_path.$p->image);
-                $img->fit(100,100,function($constraint){
-                    $constraint->upsize();
-                });
-                $img->save($p->file_path.'t_'.$p->image);
-            }
-        }
 
         return redirect('admin/products')->with('message','El producto ' . $p->name . ' se ha modificado exitosamente.')->with('typealert', 'success');
-    }
-    public function postProductGalleryAdd(Request $request, $id){
-        $rules = [
-            // el key deberia ser el nombre que le pusimos al componente del form
-            'file_image' => 'required'
-        ];
-
-        $messages = [
-            'file_image.required' => 'Seleccione una imagen',
-        ];
-
-        $request->validate($rules, $messages);
-
-        $g = new PGallery;
-
-        $p = Product::findOrFail($id);
-        // extraigo el nombre de la imagen para ponerles a todas las imagegallery el mismo nombre
-        $nombreimagendestacada = substr($p->image, -14, 10);
-        $imagen = $this->uploadImageGallery($request, $nombreimagendestacada);
-        // dd($imagen);
-        $g->product_id = $id;
-        $g->file_path = $this->relativeDirectory;
-        $g->file_name = $imagen;
-        if($g->save()){
-
-            // open file a image resource
-            $img = Image::make($this->directory.$g->file_name);
-            $img->save($this->directory.$g->file_name);
-            $img->fit(100,100,function($constraint){
-                $constraint->upsize();
-            });
-
-            $img->save($this->directory.'t_'.$g->file_name);
-        }
-        return back()->with('message','La imagen se ha guardado exitosamente.')->with('typealert', 'success');
     }
 }
