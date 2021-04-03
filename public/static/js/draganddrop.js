@@ -1,70 +1,97 @@
 $(document).ready(function(){
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+    // $(function () {
+    //     $('[data-toggle="tooltip"]').tooltip()
+    // })
 
     $("#uploadImage").css("display", "none")
     $("#uploadImageMiniature").css("display", "none")
     $("drop").removeClass("droping")
     $("drop").addClass("open")
 
-    // puse dos veces este codigo del click del eliminar foto porque
-    // si lo declaraba una solamente aca cuando hacia el upload de la foto
-    // no me tomaba el evento y si lo declaraba solamente arriba no me tomaba
-    // el evento onclick para las fotos que ya estaban cargadas
-    $('.eliminar_foto').on('click',function(e) {
-        var hijo = $(this).children('input')[0]
+    // DELEGATE
+    // registro el evento en document y cuando se agregue un elemento dinamicamente
+    // el listener del click va a estar registrado (antes lo agregaba dos veces)
+    $(document).on('click','i','.eliminar_foto',function(e) {
+        var hijo = $(this).parent().children()[0]
         var id = hijo['value']
-        if ($('#'+id).lenght!==0){
-            $('#'+id).remove()
+        var array_elim = $(this).parent()[0].classList
+        var seguir_elim = false
+        for(var j in array_elim){
+            if (array_elim.item(j) == 'eliminar_foto'){
+                seguir_elim = true
+            }
+        }
 
-            var formData = new FormData()
-            formData.append("id", id)
-            $.ajax({
-                url:"/admin/deletePhoto",
-                type:"POST",
-                data: formData,
-                processData: false,  // tell jQuery not to process the data
-                contentType: false,   // tell jQuery not to set contentType
-                success:function(){
-                }
-            })
+        if (seguir_elim){
+            if ($('#'+id).lenght!==0){
+                $('#'+id).remove()
+                var formData = new FormData()
+                formData.append("id", id)
+                $.ajax({
+                    url:"/admin/deletePhoto",
+                    type:"POST",
+                    data: formData,
+                    processData: false,  // tell jQuery not to process the data
+                    contentType: false,   // tell jQuery not to set contentType
+                    success:function(){
+                    }
+                })
+            }
         }
     })
 
-    // registro el evento en document y cuando se agregue un elemento dinamicamente
-    // el listener del click va a estar registrado (antes lo agregaba dos veces)
     $(document).on('click','i','.cover',function(e) {
+
+
         var hijo = $(this).parent().children()[0]
         var id = hijo['value']
-        var formData = new FormData()
-        formData.append("id", id)
-        $.ajax({
-            url:"/admin/setCoverImage",
-            type:"POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success:function(){
-                var star = document.getElementsByName(id)[0]
-                var array_star = star.classList
+        var array_cover = $(this).parent()[0].classList
+        var seguir = false
+        for(var j in array_cover){
+            if (array_cover.item(j) == 'cover'){
+                seguir = true
+            }
+        }
+        if (seguir){
+            var hijos = document.getElementsByClassName('base')
 
-                for(var i in array_star){
-                    if (array_star.item(i) == 'fas'){
-                        star.classList.remove('fas')
-                        star.classList.add('far')
-                        break
-                    }
-                    if (array_star.item(i) == 'far'){
-                        star.classList.remove('far')
-                        star.classList.add('fas')
+            for(var z in hijos){
+                var array_cover = hijos.item(z).classList
+
+                for (var w in array_cover){
+                    if (array_cover.item(w) == 'fas'){
+                        hijos.item(z).classList.remove('fas')
+                        hijos.item(z).classList.add('far')
                         break
                     }
                 }
             }
-        })
-    })
 
+            var formData = new FormData()
+            formData.append("id", id)
+            $.ajax({
+                url:"/admin/setCoverImage",
+                type:"POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success:function(){
+
+                    var star = document.getElementsByName(id)[0]
+                    var array_star = star.classList
+
+                    for(var i in array_star){
+                        if (array_star.item(i) == 'far'){
+                            star.classList.remove('far')
+                            star.classList.add('fas')
+                            break
+                        }
+
+                    }
+                }
+            })
+        }
+    })
 })
 
 let drop = document.getElementById('drop')
@@ -168,13 +195,13 @@ function upload(archivo,sub_id){
             html +=     '<img src="'+complete_file+'"></img>'
             html +=     '<div class="row">'
             html +=         '<div class="col-md-6 d-flex justify-content-center">'
-            html +=             '<a class="eliminar_foto" data-toggle="tooltip" data-placement="top" title="Eliminar Foto">'
+            html +=             '<a class="eliminar_foto" alt="Eliminar Foto">'
             html +=                 '<input type="hidden" value="'+id+'">'
             html +=                 '<i class="far fa-trash-alt"></i>'
             html +=              '</a>'
             html +=         '</div>'
             html +=         '<div class="col-md-6 d-flex justify-content-center">'
-            html +=             '<a class="cover" data-toggle="tooltip" data-placement="top" title="Foto de Portada">'
+            html +=             '<a class="cover" alt="Foto de Portada">'
             html +=                 '<input type="hidden" value="'+id+'">'
             html +=                 '<i id="star" name="'+id+'" class="'+clase+'"></i>'
             html +=             '</a>'
@@ -183,27 +210,6 @@ function upload(archivo,sub_id){
             html +='</article>'
 
             $('#gallery').append(html)
-
-            $('.eliminar_foto').on('click',function(e) {
-                var hijo = $(this).children('input')[0]
-                var id = hijo['value']
-                if ($('#'+id).lenght!==0){
-                    $('#'+id).remove()
-
-                    var formData = new FormData()
-                    formData.append("id", id)
-                    $.ajax({
-                        url:"/admin/deletePhoto",
-                        type:"POST",
-                        data: formData,
-                        processData: false,  // tell jQuery not to process the data
-                        contentType: false,   // tell jQuery not to set contentType
-                        success:function(){
-
-                        }
-                    })
-                }
-            })
         }
     })
 }

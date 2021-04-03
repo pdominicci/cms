@@ -115,13 +115,13 @@
                                     <img src="{{url($img->file_path.'t_'.$img->file_name)}}">
                                     <div class="row">
                                         <div class="col-md-6 d-flex justify-content-center">
-                                            <a class="eliminar_foto" data-toggle="tooltip" data-placement="top" title="Eliminar Foto">
+                                            <a class="eliminar_foto" alt="Eliminar Foto">
                                                 <input type="hidden" value="{{$img->id}}">
                                                 <i class="far fa-trash-alt"></i>
                                             </a>
                                         </div>
                                         <div class="col-md-6 d-flex justify-content-center">
-                                            <a class="cover" data-toggle="tooltip" data-placement="top" title="Foto de Portada">
+                                            <a class="cover" alt="Foto de Portada">
                                                 <input id="input_{{$img->id}}" type="hidden" value="{{$img->id}}">
                                                 @if ($img->cover_image == 'S')
                                                     <i id="star" name="{{$img->id}}" class="base fas fa-star"></i>
